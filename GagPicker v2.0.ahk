@@ -19,21 +19,20 @@ global GREEN := 0x448888
 global Coords := Object()
 
 FileRead, Contents, config.ini
-if not ErrorLevel
+if ErrorLevel
 {
-    ParseFile(Coords, Contents)
+    Config()
 }
-else
-{
-    Config(Coords)
-}
+ParseFile(Coords, Contents)
 CalculateCoords(Coords)
+;TestCoords(Coords)
 
 ^Q::
     ;Force recalibrate
     Coords := Object()
-    Config(Coords)
-    CalculateCoords(Coords)
+    Config()
+    ParseFile(Coords, Contents)
+    ;CalculateCoords(Coords)
     return
 
 ^W::
@@ -55,17 +54,19 @@ CalculateCoords(ByRef Coords)
     ;Calculate x and y coords of each given row and column
     xCoords := Object()
     yCoords := Object()
-    x_index := 0
-    while x_index < MAX_LEVEL
+    level := 0
+    while level < MAX_LEVEL
     {
-        xCoords[x_index] := Coords[THROW, x_index, 0]
-        x_index += 1
+        GetCoords(Xc, Yc, Coords[THROW, level])
+        xCoords[level] := Xc
+        level++
     }
-    y_index := 0
-    while y_index <= DROP
+    track := 0
+    while track <= DROP
     {
-        yCoords[y_index] := Coords[y_index, 0, 1]
-        y_index += 1
+        GetCoords(Xc, Yc, Coords[track, 0])
+        yCoords[track] := Yc
+        track++
     }
     FillCoords(Coords, xCoords, yCoords)
 }
@@ -79,8 +80,7 @@ FillCoords(ByRef Coords, ByRef xCoords, ByRef yCoords)
         level := 0
         while level < MAX_LEVEL
         {
-            Coords[track, level, 0] := xCoords[level]
-            Coords[track, level, 1] := yCoords[track]
+            Coords[track, level] := xCoords[level] "," yCoords[track]
             ;MsgBox % Coords[track, level, 0] "," Coords[track, level, 1]
             ;MouseMove, xCoords[level], yCoords[track]
             ;KeyWait, Control
@@ -99,19 +99,19 @@ TestCoords(ByRef Coords)
         level := 0
         while level < MAX_LEVEL
         {
-            MouseMove, Coords[track, level, 0], Coords[track, level, 1]
-            KeyWait, Control
-            KeyWait, Control, D
+            GetCoords(Xc, Yc, Coords[track, level])
+            MouseMove, Xc, Yc
+            MsgBox % Coords[track, level]
             level += 1
         }
         track += 1
     }
 }
 
-ScanCoords(ByRef Coords, ByRef Choices, ByRef ChoicesSize)
+ScanCoords(ByRef Coords, ByRef Choices)
 {
     ;Loop through coords and add them to choices if they can be used
-    Choices := Object()
+    Choices := []
     ChoicesSize := 0
     track := TU
     while track <= DROP
@@ -120,9 +120,7 @@ ScanCoords(ByRef Coords, ByRef Choices, ByRef ChoicesSize)
         while level < MAX_LEVEL
         {
             if GagIsValid(Coords, track, level) {
-                Choices[ChoicesSize,0] := Coords[track, level,0]
-                Choices[ChoicesSize,1] := Coords[track, level,1]
-                ChoicesSize += 1
+                Choices.Insert(Coords[track, level])
             }
             level += 1
         }
@@ -130,17 +128,52 @@ ScanCoords(ByRef Coords, ByRef Choices, ByRef ChoicesSize)
     }
 }
 
+GagIsValid(ByRef Coords, track, level)
+{
+    ;Returns true if the pixel matches a valid color for a given gag
+    GetCoords(xVal, yVal, Coords[track, level])
+    ;MouseMove, xVal, yVal
+    PixelSearch Px, Py, xVal, yVal, xVal, yVal, BLUE, 15, FAST|RGB
+    if ErrorLevel
+    {
+        PixelSearch Px, Py, xVal, yVal, xVal, yVal, GREEN, 15, FAST|RGB
+        if ErrorLevel
+        {
+            return 0
+        }
+    }
+    return 1
+}
+
+TestChoices(ByRef Choices)
+{
+    index := 1
+    while index <= Choices.Length()
+    {
+        GetCoords(Xc, Yc, Choices[index])
+        MouseMove, Xc, Yc
+        MsgBox % Choices[index]
+        index += 1
+    }
+}
+
+PickGag(ByRef Coords)
+{
+    ScanCoords(Coords, Choices)
+    TestChoices(Choices)
+    Random, Choice, 1, Choices.Length()
+    GetCoords(Xc, Yc, Choices[Choice])
+    MouseClick, , Xc, Yc
+}
+
 FindTargets(ByRef Coords)
 {
-    xPos := Coords[TARGETS, 0, 0] + 0
-    yPos := Coords[TARGETS, 0, 1] + 0
-    temp := Coords[TARGETS, 1, 0] + 0
-    temp -= xPos
-    xDiff := temp
-    temp := Coords[TARGETS, 1, 1] + 0
-    temp -= yPos
-    yDiff := temp
+    GetCoords(xPos, yPos, Coords[TARGETS, 0])
+    GetCoords(xDiff, yDiff, Coords[TARGETS, 1])
+    xDiff -= xPos
+    yDiff -= yPos
     temp = % "o30 e0 n fx,y a" xPos "," yPos "," xDiff "," yDiff
+    MsgBox % temp
     Result := FindClick("lib\blue.png", temp)
     Sort, Result, N
     Loop, Parse, Result, `n
@@ -161,44 +194,7 @@ GetCoords(ByRef OutputX, ByRef OutputY, Input)
         C.Insert(A_LoopField)
     }
     OutputX := C[1] + 0
-    OutputY := C[2] + 0
+    OutputY := C[2]
+    OutputY += 0
     return
-}
-
-GagIsValid(ByRef Coords, track, level)
-{
-    ;Returns true if the pixel matches a valid color for a given gag
-    xVal := Coords[track, level, 0]
-    yVal := Coords[track, level, 1]
-    ;MouseMove, xVal, yVal
-    PixelSearch Px, Py, xVal, yVal, xVal, yVal, BLUE, 15, FAST|RGB
-    if ErrorLevel
-    {
-        PixelSearch Px, Py, xVal, yVal, xVal, yVal, GREEN, 15, FAST|RGB
-        if ErrorLevel
-        {
-            return 0
-        }
-    }
-    return 1
-}
-
-TestChoices(ByRef Choices, ChoicesSize)
-{
-    MsgBox % ChoicesSize
-    index := 0
-    while index < ChoicesSize
-    {
-        MouseMove, Choices[index,0], Choices[index,1]
-        MsgBox % Choices[index,0] . Choices[index,1]
-        index += 1
-    }
-}
-
-PickGag(ByRef Coords)
-{
-    ScanCoords(Coords, Choices, ChoicesSize)
-    ;TestChoices(Choices, ChoicesSize)
-    Random, Choice, 1, ChoicesSize
-    MouseClick, , Choices[Choice, 0], Choices[Choice, 1]
 }
