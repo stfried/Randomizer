@@ -36,8 +36,8 @@ CalculateCoords(Coords)
     return
 
 ^W::
-    ;PickGag(Coords)
-    FindTargets(Coords)
+    ChooseGag(Coords, "DEBUG")
+    FindTargets(Coords, "DEBUG")
     return
     
 TestPixelSearch()
@@ -108,11 +108,10 @@ TestCoords(ByRef Coords)
     }
 }
 
-ScanCoords(ByRef Coords, ByRef Choices)
+CountGags(ByRef Coords, ByRef Gags)
 {
-    ;Loop through coords and add them to choices if they can be used
-    Choices := []
-    ChoicesSize := 0
+    ;Loop through Coords and add them to Gags if they can be used
+    Gags := []
     track := TU
     while track <= DROP
     {
@@ -120,7 +119,7 @@ ScanCoords(ByRef Coords, ByRef Choices)
         while level < MAX_LEVEL
         {
             if GagIsValid(Coords, track, level) {
-                Choices.Insert(Coords[track, level])
+                Gags.Insert(Coords[track, level])
             }
             level += 1
         }
@@ -145,29 +144,49 @@ GagIsValid(ByRef Coords, track, level)
     return 1
 }
 
-TestChoices(ByRef Choices)
+PickObject(ByRef Obj, Roulette="False")
+{
+    if (roulette = "True")
+    {
+        Random, Num, 10, 20
+        Loop %Num%
+        {
+            Random, Choice, 1, Obj.Length()
+            GetCoords(X, Y, Obj[Choice])
+            MouseMove, X, Y
+        }
+    }
+    Random, Choice, 1, Obj.Length()
+    GetCoords(X, Y, Obj[Choice])
+    MouseClick, , X,Y
+}
+
+TestObjects(ByRef Obj)
 {
     index := 1
-    while index <= Choices.Length()
+    while index <= Obj.Length()
     {
-        GetCoords(Xc, Yc, Choices[index])
+        GetCoords(Xc, Yc, Obj[index])
         MouseMove, Xc, Yc
-        MsgBox % Choices[index]
+        MsgBox % Obj[index]
         index += 1
     }
 }
 
-PickGag(ByRef Coords)
+ChooseGag(ByRef Coords, Debug="False")
 {
-    ScanCoords(Coords, Choices)
-    TestChoices(Choices)
-    Random, Choice, 1, Choices.Length()
-    GetCoords(Xc, Yc, Choices[Choice])
-    MouseClick, , Xc, Yc
+    CountGags(Coords, Gags)
+    if (debug = "True")
+    {
+        MsgBox DEBUG
+        TestObjects(Gags)
+    }
+    PickObject(Gags)
 }
 
-FindTargets(ByRef Coords)
+FindTargets(ByRef Coords, ByRef Targets)
 {
+    Targets := []
     GetCoords(xPos, yPos, Coords[TARGETS, 0])
     GetCoords(xDiff, yDiff, Coords[TARGETS, 1])
     xDiff -= xPos
@@ -184,6 +203,16 @@ FindTargets(ByRef Coords)
         ;MouseMove, Xc, Yc
         ;KeyWait, Control, D
     }
+}
+
+ChooseTarget(ByRef Coords, Debug="False")
+{
+    FindTargets(Coords, Targets)
+    if (debug = "True")
+    {
+        TestObjects(Targets)
+    }
+    PickObject(Targets)
 }
 
 GetCoords(ByRef OutputX, ByRef OutputY, Input)
