@@ -24,6 +24,7 @@ global GREEN := 0x448888
 
 global Coords := Object()
 
+MsgBox RUNNING
 FileRead, Contents, coordinates.ini
 if ErrorLevel
 {

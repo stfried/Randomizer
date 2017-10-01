@@ -1,10 +1,10 @@
-Setup()
+setup()
 {
     Input := Object()
-    AssignCoordinates(Input)  
+    assignCoordinates(Input)  
 }
 
-ParseCoords(ByRef Coords, ByRef Contents)
+parseCoords(ByRef Contents)
 {
     ;Read the coordinates.ini
     Lines := Object()
@@ -13,79 +13,86 @@ ParseCoords(ByRef Coords, ByRef Contents)
         Lines[A_Index] := A_LoopField
     }
     line := 2
-    ReadCoordinates(Coords, Lines, TU, 0, line)
-    ReadCoordinates(Coords, Lines, TRAP, 0, line)
-    ReadCoordinates(Coords, Lines, LURE, 0, line)
-    ReadCoordinates(Coords, Lines, SOUND, 0, line)
-    ReadCoordinates(Coords, Lines, THROW, 0, line)
-    ReadCoordinates(Coords, Lines, SQUIRT, 0, line)
-    ReadCoordinates(Coords, Lines, DROP, 0, line)
-    ReadCoordinates(Coords, Lines, THROW, 1, line)
-    ReadCoordinates(Coords, Lines, THROW, 2, line)
-    ReadCoordinates(Coords, Lines, THROW, 3, line)
-    ReadCoordinates(Coords, Lines, THROW, 4, line)
-    ReadCoordinates(Coords, Lines, THROW, 5, line)
-    ReadCoordinates(Coords, Lines, THROW, 6, line)
-    ReadCoordinates(Coords, Lines, EXTRA, 0, line)
-    ReadCoordinates(Coords, Lines, EXTRA, 1, line)
-    ReadCoordinates(Coords, Lines, EXTRA, 2, line)
-    ReadCoordinates(Coords, Lines, TGETS, 0, line)
-    ReadCoordinates(Coords, Lines, TGETS, 1, line)
-    ReadCoordinates(Coords, Lines, TGETS, 2, line)
+    readCoordinates(Lines, TOONUP, 1, line)
+    readCoordinates(Lines, TRAP, 1, line)
+    readCoordinates(Lines, LURE, 1, line)
+    readCoordinates(Lines, SOUND, 1, line)
+    readCoordinates(Lines, THROW, 1, line)
+    readCoordinates(Lines, SQUIRT, 1, line)
+    readCoordinates(Lines, DROP, 1, line)
+    readCoordinates(Lines, THROW, 2, line)
+    readCoordinates(Lines, THROW, 3, line)
+    readCoordinates(Lines, THROW, 4, line)
+    readCoordinates(Lines, THROW, 5, line)
+    readCoordinates(Lines, THROW, 6, line)
+    readCoordinates(Lines, THROW, 7, line)
+    readCoordinates(Lines, EXTRA, 1, line)
+    readCoordinates(Lines, EXTRA, 2, line)
+    readCoordinates(Lines, EXTRA, 3, line)
+    readCoordinates(Lines, TGETS, 1, line)
+    readCoordinates(Lines, TGETS, 2, line)
+    readCoordinates(Lines, TGETS, 3, line)
 }
 
-ReadCoordinates(ByRef Coords, ByRef Lines, track, level, ByRef line)
+readCoordinates(ByRef Lines, track, level, ByRef line)
 {
-    ;Given the line number with the x coord, assigns the x and y coords of a gag from file
-    Coords[track, level] := Lines[line]
+    ;Given the line number with the coordinates, assigns the x and y coords of a gag from file
+    ;Coords[track, level] := Lines[line]
+    getCoords(X, Y, Lines[line])
+    temp := new Gag
+    temp.coord.setX(X)
+    temp.coord.setY(Y)
+    temp.setTrack(track)
+    temp.setLevel(level)
+    Gags[track, level] := temp    
     line++
 }
 
-AssignCoordinates(ByRef Input)
+assignCoordinates(ByRef Input)
 {
     ;Get user to calibrate positions
     ToolTip, Press control over the right side of the feather button.,0,0
-    InputCoordinates(Input, TU, 0)
+    inputCoordinates(Input, TU, 0)
     ToolTip, Press control over the right side of the banana peel button.,0,0
-    InputCoordinates(Input, TRAP, 0)
+    inputCoordinates(Input, TRAP, 0)
     ToolTip, Press control over the right side of the dollar bill button.,0,0
-    InputCoordinates(Input, LURE, 0)
+    inputCoordinates(Input, LURE, 0)
     ToolTip, Press control over the right side of the bike horn button.,0,0
-    InputCoordinates(Input, SOUND, 0)
+    inputCoordinates(Input, SOUND, 0)
     ToolTip, Press control over the right side of the cupcake button.,0,0
-    InputCoordinates(Input, THROW, 0)
+    inputCoordinates(Input, THROW, 0)
     ToolTip, Press control over the right side of the squirting flower button.,0,0
-    InputCoordinates(Input, SQUIRT, 0)
+    inputCoordinates(Input, SQUIRT, 0)
     ToolTip, Press control over the right side of the flower pot button.,0,0
-    InputCoordinates(Input, DROP, 0)
+    inputCoordinates(Input, DROP, 0)
     ToolTip, Press control over the right side of the fruit pie slice button.,0,0
-    InputCoordinates(Input, THROW, 1)
+    inputCoordinates(Input, THROW, 1)
     ToolTip, Press control over the right side of the cream pie slice button.,0,0
-    InputCoordinates(Input, THROW, 2)
+    inputCoordinates(Input, THROW, 2)
     ToolTip, Press control over the right side of the whole fruit pie button.,0,0
-    InputCoordinates(Input, THROW, 3)
+    inputCoordinates(Input, THROW, 3)
     ToolTip, Press control over the right side of the whole cream pie button.,0,0
-    InputCoordinates(Input, THROW, 4)
+    inputCoordinates(Input, THROW, 4)
     ToolTip, Press control over the right side of the birthday cake button.,0,0
-    InputCoordinates(Input, THROW, 5)
+    inputCoordinates(Input, THROW, 5)
     ToolTip, Press control over the right side of the wedding cake button.,0,0
-    InputCoordinates(Input, THROW, 6)
+    inputCoordinates(Input, THROW, 6)
     ToolTip, Press control over the fire button.,0,0
-    InputCoordinates(Input, EXTRA, 0)
+    inputCoordinates(Input, EXTRA, 0)
     ToolTip, Press control over the pass button.,0,0
-    InputCoordinates(Input, EXTRA, 1)
+    inputCoordinates(Input, EXTRA, 1)
     ToolTip, Press control over the SOS button.,0,0
-    InputCoordinates(Input, EXTRA, 2)
+    inputCoordinates(Input, EXTRA, 2)
     ToolTip, Press control over the top left corner of the red targeting menu.,0,0
-    InputCoordinates(Input, TGETS, 0)
+    inputCoordinates(Input, TGETS, 0)
     ToolTip, Press control over the bottom right corner of the red targeting menu.,0,0
-    InputCoordinates(Input, TGETS, 1)
+    inputCoordinates(Input, TGETS, 1)
     ToolTip, Press control over the back arrow that appears AFTER you have selected a target (if any).,0,0
-    InputCoordinates(Input, TGETS, 2)
+    inputCoordinates(Input, TGETS, 2)
     CoordToFile(Input)
 }
 
-CoordToFile(ByRef Input)
+coordToFile(ByRef Input)
 {
     ;Write to file
     FileDelete, coordinates.ini
@@ -111,7 +118,7 @@ CoordToFile(ByRef Input)
     FileAppend, % Input[TGETS,2,0]","Input[TGETS,2,1]"`n", coordinates.ini
 }
 
-InputCoordinates(ByRef Input, track, level)
+inputCoordinates(ByRef Input, track, level)
 {
     ;Record user input positions
     KeyWait, Control
@@ -122,24 +129,22 @@ InputCoordinates(ByRef Input, track, level)
     ToolTip
 }
 
-ParseConfig(Contents)
+parseConfig(Contents)
 {
     Lines := Object()
     Loop, parse, Contents, `n
     {
         Lines[A_Index] := A_LoopField
     }
-    ReadVals(MIN_LEVEL, Lines[2])
-    ReadVals(MAX_LEVEL, Lines[3])
-    MIN_LEVEL -= 1
-    MAX_LEVEL -= 1
-    ReadVals(tracks, Lines[5], "False")
-    GetTracks(tracks)
-    ReadVals(BLACKLISTED_GAGS, Lines[9], "False")
-    ReadVals(PASS_CHANCE, Lines[16])
+    readVals(MIN_LEVEL, Lines[2])
+    readVals(MAX_LEVEL, Lines[3])
+    readVals(tracks, Lines[5], "False")
+    getTracks(tracks)
+    readVals(BLACKLISTED_GAGS, Lines[9], "False")
+    readVals(PASS_CHANCE, Lines[16])
 }
 
-ReadVals(ByRef val, line, is_num="True")
+readVals(ByRef val, line, is_num="True")
 {
     C := []
     Loop, Parse, line, :,
@@ -151,7 +156,7 @@ ReadVals(ByRef val, line, is_num="True")
         val += 0
 }
 
-GetTracks(raw_text)
+getTracks(raw_text)
 {
     IfInString, raw_text, TU
         ALLOWED_TRACKS.Insert(TOONUP)
@@ -169,7 +174,7 @@ GetTracks(raw_text)
         ALLOWED_TRACKS.Insert(DROP)
 }
 
-Config()
+config()
 {
     FileDelete, config.ini
     FileAppend,
