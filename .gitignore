@@ -45,3 +45,8 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+
+screenshots/
+bin/coordinates.ini
+config.ini
+test.ahk

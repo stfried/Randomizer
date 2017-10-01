@@ -1,15 +1,15 @@
-init(force=0)
+init(forceR=0, forceC=0)
 {
-    FileRead, Contents, coordinates.ini
-    if (ErrorLevel or force)
+    FileRead, Contents, bin\coordinates.ini
+    if (ErrorLevel or forceR)
     {
         MsgBox Setup required. Please have a battle menu ready.
         setup()
-        FileRead, Contents, coordinates.ini
+        FileRead, Contents, bin\coordinates.ini
     }
     parseCoords(Contents)
     FileRead, Contents, config.ini
-    if ErrorLevel
+    if (ErrorLevel or forceC)
     {
         MsgBox User settings not found. Importing defaults.
         config()
@@ -19,7 +19,7 @@ init(force=0)
     calculateCoords()
 }
 
-recalibrate()
+reInit()
 {
     global MIN_LEVEL := 1
     global MAX_LEVEL := 6
@@ -27,7 +27,18 @@ recalibrate()
     global BLACKLISTED_GAGS := ""
     global PASS_CHANCE := 0
     global RUNNING := 0
+}
+
+recalibrate()
+{
+    reInit()
     init(1)
+}
+
+reconfig()
+{
+    reInit()
+    init(0, 1)
 }
 
 calculateCoords()

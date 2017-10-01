@@ -42,3 +42,14 @@ debugPrint(msg, debug=0)
         MsgBox % msg
     }
 }
+
+attemptReload()
+{
+    Reload
+    Sleep 1000 ; If successful, the reload will close this instance during the Sleep, so the line below will never be reached.
+    MsgBox, 2, Reload Error!, The script could not be reloaded. Would you like to retry?
+    IfMsgBox Retry
+        attemptReload()
+    IfMsgBox Abort
+        ExitApp
+}
