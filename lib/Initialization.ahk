@@ -1,22 +1,33 @@
-init()
+init(force=0)
 {
     FileRead, Contents, coordinates.ini
-    if ErrorLevel
+    if (ErrorLevel or force)
     {
         MsgBox Setup required. Please have a battle menu ready.
         setup()
+        FileRead, Contents, coordinates.ini
     }
-    FileRead, Contents, coordinates.ini
     parseCoords(Contents)
     FileRead, Contents, config.ini
     if ErrorLevel
     {
         MsgBox User settings not found. Importing defaults.
         config()
+        FileRead, Contents, config.ini
     }
-    FileRead, Contents, config.ini
     parseConfig(Contents)
     calculateCoords()
+}
+
+recalibrate()
+{
+    global MIN_LEVEL := 1
+    global MAX_LEVEL := 6
+    global ALLOWED_TRACKS := []
+    global BLACKLISTED_GAGS := ""
+    global PASS_CHANCE := 0
+    global RUNNING := 0
+    init(1)
 }
 
 calculateCoords()

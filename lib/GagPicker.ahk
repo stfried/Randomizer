@@ -92,3 +92,49 @@ pickGag(ByRef useable, roulette=0)
     MouseClick, , useable[choice].coord.getX(), useable[choice].coord.getY()
     return useable[choice]
 }
+
+clickBack()
+{
+    MouseClick, , Gags[TGETS,3].coord.getX(), Gags[TGETS,3].coord.getY()
+}
+
+cycleGags(debug=0)
+{
+    attackTargets := []
+    tuTargets := []
+    lureTargets := []
+    trapTargets := []
+    lured := 0
+    trapped := 0
+    attacked := 0
+    tued := 0
+    useable := countUseableGags()
+    RUNNING := 1
+    if (not debug)
+        SetTimer, StopCycling, 18000
+    while (RUNNING)
+    {
+        if (A_Index > 1)
+        {
+            clickBack()
+            pause(debug)
+        }
+        gag := pickGag(useable)
+        pause(debug)
+        chooseTargetCycle(gag, attackTargets, tuTargets, lureTargets, trapTargets, attacked, tued, lured, trapped)
+        pause(debug)
+    }
+}
+
+pause(debug=0)
+{
+    if (debug)
+    {
+        KeyWait, Control
+        KeyWait, Control, D
+    }
+    else
+    {
+        Sleep 50
+    }
+}

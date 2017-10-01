@@ -34,3 +34,11 @@ getCoords(ByRef OutputX, ByRef OutputY, Input)
     OutputY += 0
     return
 }
+
+debugPrint(msg, debug=0)
+{
+    if (debug)
+    {
+        MsgBox % msg
+    }
+}
