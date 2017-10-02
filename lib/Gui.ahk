@@ -172,7 +172,7 @@ checkBox(track, level)
         ;Blacklisted, need to add to blacklist
         BLACKLISTED_GAGS := BLACKLISTED_GAGS " " formatted
     }
-    MsgBox % BLACKLISTED_GAGS
+    ;MsgBox % BLACKLISTED_GAGS
 }
 
 watchmouse:
