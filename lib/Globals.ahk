@@ -20,8 +20,6 @@ global GREEN := 0x448888
 
 global Gags := []
 
-
-
 getCoords(ByRef OutputX, ByRef OutputY, Input)
 {
     C := []

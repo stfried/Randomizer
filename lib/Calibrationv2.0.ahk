@@ -141,6 +141,7 @@ parseConfig(Contents)
     readVals(tracks, Lines[5], "False")
     getTracks(tracks)
     readVals(BLACKLISTED_GAGS, Lines[9], "False")
+    StringReplace, BLACKLISTED_GAGS, BLACKLISTED_GAGS, `r
     readVals(PASS_CHANCE, Lines[16])
 }
 
@@ -217,7 +218,7 @@ ALLOWED_TRACKS: %formatted%
 #Blacklisted gags. Provide coordinate pairs separated by commas and spaces, eg.
 # 1,1 5,2 3,7
 #This effectively blacklists feather, fruit pie slice, and presentation.
-BLACKLISTED_GAGS: %BLACKLISTED_GAGS%
+BLACKLISTED_GAGS:%BLACKLISTED_GAGS%
 #Likelihood to fire instead of use a gag. Decimal between 1 and 0.
 FIRE: 0
 #Likelihood to SOS instead of use a gag. Decimal between 1 and 0.

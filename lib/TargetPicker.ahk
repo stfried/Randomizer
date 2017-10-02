@@ -94,18 +94,18 @@ chooseTargetCycle(gag, ByRef attackTargets, ByRef tuTargets, ByRef lureTargets, 
     }
     if (gagIsSingleTarget(gag))
     {
-        MsgBox Single Target!
+        debugPrint("Single Target!", debug)
         if (gag.getTrack() = TOONUP)
         {
             if (not tued)
             {
                 debugPrint("First time TU!", debug)
-                pause(1)
+                pause(debug)
                 tuTargets := findTargets()
                 tued := 1
             }
             debugPrint("TU!", debug)
-            pause(1)
+            pause(debug)
             testTargets(tuTargets, debug)
             pickTarget(tuTargets)
         }
@@ -114,12 +114,12 @@ chooseTargetCycle(gag, ByRef attackTargets, ByRef tuTargets, ByRef lureTargets, 
             if (not trapped)
             {
                 debugPrint("First time trap!", debug)
-                pause(1)
+                pause(debug)
                 trapTargets := findTargets()
                 trapped := 1
             }
             debugPrint("TRAPPED!", debug)
-            pause(1)
+            pause(debug)
             testTargets(trapTargets, debug)
             pickTarget(trapTargets)
         }
@@ -128,12 +128,12 @@ chooseTargetCycle(gag, ByRef attackTargets, ByRef tuTargets, ByRef lureTargets, 
             if (not lured)
             {
                debugPrint("First time lure!", debug)
-                pause(1)
+                pause(debug)
                 lureTargets := findTargets()
                 lured := 1
             }
             debugPrint("LURED!", debug)
-            pause(1)
+            pause(debug)
             testTargets(lureTargets, debug)
             pickTarget(lureTargets)
         }
@@ -142,12 +142,12 @@ chooseTargetCycle(gag, ByRef attackTargets, ByRef tuTargets, ByRef lureTargets, 
             if (not attacked)
             {
                 debugPrint("First time attack!", debug)
-                pause(1)
+                pause(debug)
                 attackTargets := findTargets()
                 attacked := 1
             }
             debugPrint("ATTACKED!", debug)
-            pause(1)
+            pause(debug)
             testTargets(attackTargets, debug)
             pickTarget(attackTargets)
         }

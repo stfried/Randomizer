@@ -1,3 +1,9 @@
+goTo AfterMenu
+
+MenuHandler:
+menuHelper(A_ThisMenuItem)
+return
+
 createMenu()
 {
     Menu, ActionMenu, Add, SingleRoulette, MenuHandler

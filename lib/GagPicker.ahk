@@ -114,6 +114,9 @@ cycleGags(debug=0)
             pause(debug)
         }
         gag := pickGag(useable)
+        if (not gagIsValid(gag))
+        ;Round selection over
+            return
         pause(debug)
         chooseTargetCycle(gag, attackTargets, tuTargets, lureTargets, trapTargets, attacked, tued, lured, trapped)
         pause(debug)
