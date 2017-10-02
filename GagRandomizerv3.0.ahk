@@ -37,6 +37,9 @@ Gosub, CreateGUI
 ;Bring up menu
 ^M::
     Menu, MainMenu, Show
+
+^R::
+    chooseOneGag(1,1)
     
 
 RemoveToolTip:

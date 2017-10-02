@@ -9,6 +9,15 @@ findTargets()
     yDiff -= yPos
     temp = % "o30 e0 n fx,y a" xPos "," yPos "," xDiff "," yDiff
     Result := FindClick("lib\blue.png", temp)
+    while (not Result)
+    {
+        Result := FindClick("lib\blue.png", temp)
+        if (A_Index = 5)
+        {
+            return "NO TARGETS"
+        }
+        Sleep 50
+    }
     ;Sort, Result, N
     Loop, Parse, Result, `n
     {
@@ -102,6 +111,8 @@ chooseTargetCycle(gag, ByRef attackTargets, ByRef tuTargets, ByRef lureTargets, 
                 debugPrint("First time TU!", debug)
                 pause(debug)
                 tuTargets := findTargets()
+                if (tuTargets = "NO TARGETS")
+                    return "NO TARGETS"
                 tued := 1
             }
             debugPrint("TU!", debug)
@@ -116,6 +127,8 @@ chooseTargetCycle(gag, ByRef attackTargets, ByRef tuTargets, ByRef lureTargets, 
                 debugPrint("First time trap!", debug)
                 pause(debug)
                 trapTargets := findTargets()
+                if (trapTargets = "NO TARGETS")
+                    return "NO TARGETS"
                 trapped := 1
             }
             debugPrint("TRAPPED!", debug)
@@ -130,6 +143,8 @@ chooseTargetCycle(gag, ByRef attackTargets, ByRef tuTargets, ByRef lureTargets, 
                debugPrint("First time lure!", debug)
                 pause(debug)
                 lureTargets := findTargets()
+                if (lureTargets = "NO TARGETS")
+                    return "NO TARGETS"
                 lured := 1
             }
             debugPrint("LURED!", debug)
@@ -144,6 +159,8 @@ chooseTargetCycle(gag, ByRef attackTargets, ByRef tuTargets, ByRef lureTargets, 
                 debugPrint("First time attack!", debug)
                 pause(debug)
                 attackTargets := findTargets()
+                if (attackTargets = "NO TARGETS")
+                    return "NO TARGETS"
                 attacked := 1
             }
             debugPrint("ATTACKED!", debug)

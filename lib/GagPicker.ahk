@@ -13,7 +13,7 @@ gagIsValid(gag)
     PixelSearch Px, Py, gag.coord.getX(), gag.coord.getY(), gag.coord.getX(), gag.coord.getY(), BLUE, 50, FAST|RGB
     if ErrorLevel
     {
-        PixelSearch Px, Py, gag.coord.getX(), gag.coord.getY(), gag.coord.getX(), gag.coord.getY(), GREEN, 50, FAST|RGB
+        PixelSearch Px, Py, gag.coord.getX(), gag.coord.getY(), gag.coord.getX(), gag.coord.getY(), GREEN, 30, FAST|RGB
         if ErrorLevel
             return 0
     }
@@ -83,6 +83,12 @@ pickGag(ByRef useable, roulette=0)
         }
     }
     Random, choice, 1, useable.Length()
+    while (not gagIsValid(useable[choice]))
+    {
+        Sleep 50
+        if (A_Index = 10)
+            return "NO TARGET"
+    }
     MouseClick, , useable[choice].coord.getX(), useable[choice].coord.getY()
     return useable[choice]
 }
@@ -104,22 +110,31 @@ cycleGags(debug=0)
     tued := 0
     useable := countUseableGags()
     RUNNING := 1
-    if (not debug)
-        SetTimer, StopCycling, 18000
+    ;if (not debug)
+        ;SetTimer, StopCycling, 50000
     while (RUNNING)
     {
         if (A_Index > 1)
         {
             clickBack()
-            pause(debug)
+            Sleep 300
         }
         gag := pickGag(useable)
-        if (not gagIsValid(gag))
-        ;Round selection over
+        if (gag = "NO TARGET")
+        {
+            ;MsgBox NO GAGS
+            RUNNING := 0
             return
+        }
         pause(debug)
-        chooseTargetCycle(gag, attackTargets, tuTargets, lureTargets, trapTargets, attacked, tued, lured, trapped)
-        pause(debug)
+        target := chooseTargetCycle(gag, attackTargets, tuTargets, lureTargets, trapTargets, attacked, tued, lured, trapped)
+        if (target = "NO TARGET")
+        {
+            ;MsgBox NO TARGET
+            ;RUNNING := 0
+            ;return
+        }
+        Sleep 300
     }
 }
 
