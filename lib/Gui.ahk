@@ -49,6 +49,13 @@ Gui, Add, CheckBox, x222 y179 w20 h20 gCheck vGag7 %g7%
 Gui, Add, Button, x72 y309 w100 h30 gSave, Save
 Gui, Add, Button, x102 y219 w70 h20 gWhitelistAll, Whitelist All
 Gui, Add, Button, x172 y219 w70 h20 gBlacklistAll, Blacklist All
+
+SetTimer timer_autohide ; this timer checks if the script is active (= non transp) or inactive (= transp)
+	PID := DllCall("GetCurrentProcessId") ; gets the PID of the script, for easy transparency
+	gui, add, text,, this is a test
+	gui, show, NoActivate, Test
+	WinSet, Trans, 255, ahk_pid %PID% ; initial transparency
+
 ; Generated using SmartGUI Creator 4.0
 Gui, Show, x0 y0 h373 w254, Gag Randomizer v3.0
 return
@@ -164,3 +171,10 @@ checkBox(track, level)
     }
     MsgBox % BLACKLISTED_GAGS
 }
+
+timer_autohide:
+	IfWinActive , ahk_pid %PID%
+		WinSet, Trans, 255, ahk_pid %PID%
+	IfWinNotActive , ahk_pid %PID%
+		WinSet, Trans, 150, ahk_pid %PID%
+return
