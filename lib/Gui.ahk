@@ -50,14 +50,17 @@ Gui, Add, Button, x72 y309 w100 h30 gSave, Save
 Gui, Add, Button, x102 y219 w70 h20 gWhitelistAll, Whitelist All
 Gui, Add, Button, x172 y219 w70 h20 gBlacklistAll, Blacklist All
 
-SetTimer timer_autohide ; this timer checks if the script is active (= non transp) or inactive (= transp)
-	PID := DllCall("GetCurrentProcessId") ; gets the PID of the script, for easy transparency
-	gui, add, text,, this is a test
-	gui, show, NoActivate, Test
-	WinSet, Trans, 255, ahk_pid %PID% ; initial transparency
-
 ; Generated using SmartGUI Creator 4.0
 Gui, Show, x0 y0 h373 w254, Gag Randomizer v3.0
+
+watchwin = Gag Randomizer ; window title to watch.
+
+coordmode, mouse, screen
+GUI, Show, noactivate w254 h373, %watchwin%
+increment := 90
+winset, transparent, %increment%, %watchwin%
+settimer, watchmouse, 10
+
 return
 
 
@@ -172,9 +175,30 @@ checkBox(track, level)
     MsgBox % BLACKLISTED_GAGS
 }
 
-timer_autohide:
-	IfWinActive , ahk_pid %PID%
-		WinSet, Trans, 255, ahk_pid %PID%
-	IfWinNotActive , ahk_pid %PID%
-		WinSet, Trans, 150, ahk_pid %PID%
+watchmouse:
+	winget, winhwd, id, %watchwin%
+	mousegetpos,,, mposhwd,, 1
+
+	if (mposhwd = winhwd)
+	   goto, fadein
+	else
+	   goto, fadeout
+return
+
+fadein:
+   while, increment < 256
+    {
+      winset, transparent, %increment%, %watchwin%
+      increment+=15
+      sleep, 1
+    }
+return
+
+fadeout:
+   while, increment > 125
+    {
+      winset, transparent, %increment%, %watchwin%
+      increment-=5
+      sleep, 1
+    }
 return
