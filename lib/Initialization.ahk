@@ -100,3 +100,54 @@ testCoords()
         track += 1
     }
 }
+
+whitelistAll()
+{
+    BLACKLISTED_GAGS := ""
+    track := TOONUP
+    while track <= DROP
+    {
+        level := 1
+        while level <= 7
+        {
+            Gags[track,level].whitelist()
+            level += 1
+        }
+        track += 1
+    }
+}
+
+blacklistAll()
+{
+    BLACKLISTED_GAGS := ""
+    track := TOONUP
+    while track <= DROP
+    {
+        level := 1
+        while level <= 7
+        {
+            Gags[track,level].blacklist()
+            BLACKLISTED_GAGS := BLACKLISTED_GAGS " " track "," level
+            level += 1
+        }
+        track += 1
+    }
+}
+
+blacklistGags()
+{
+    Loop, Parse, BLACKLISTED_GAGS, %A_Space% 
+    {
+        C := []
+        Loop, Parse, A_LoopField, `,
+        {
+            val := A_LoopField
+            val += 0
+            C.Insert(val)
+        }
+        if (C.Length() = 2)
+        {
+            Gags[C[1],C[2]].blacklist()
+        }
+    }
+}

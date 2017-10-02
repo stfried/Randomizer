@@ -3,6 +3,7 @@
     coord := new Coordinate
     track := 0
     level := 0
+    whitelisted := 1
     
     getTrack()
     {
@@ -34,9 +35,30 @@
         this.coord.setY(y_in)
     }
     
+    blacklist()
+    {
+        this.whitelisted := 0
+    }
+    
+    whitelist()
+    {
+        this.whitelisted := 1
+    }
+    
+    isWhitelisted()
+    {
+        return this.whitelisted
+    }
+    
+    toggle()
+    {
+        this.whitelisted := not this.isWhitelisted()
+        return this.whitelisted
+    }
+    
     pprint()
     {
-        return % this.track " " this.level " " this.coord.getX() " " this.coord.getY()
+        return % this.track " " this.level " " this.coord.getX() " " this.coord.getY() " " this.whitelisted
     }
 
 }

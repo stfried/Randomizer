@@ -182,8 +182,8 @@ config()
 #Gag levels are inclusive, eg. min and max levels will be used.
 MIN_GAG_LEVEL: 1
 MAX_GAG_LEVEL: 6
-#Keep separated by pipelines. Format like TU|TR|LU|SO|TH|SQ|DR
-ALLOWED_TRACKS: TU|TR|LU|SO|TH|SQ|DR
+#Keep separated by pipelines. Format like TU|TR|LU|SO|TH|SQ|DR|
+ALLOWED_TRACKS: TU|TR|LU|SO|TH|SQ|DR|
 #Blacklisted gags. Provide coordinate pairs separated by commas and spaces, eg.
 # 1,1 5,2 3,7
 #This effectively blacklists feather, fruit pie slice, and presentation.
@@ -191,7 +191,37 @@ BLACKLISTED_GAGS:
 #Likelihood to fire instead of use a gag. Decimal between 1 and 0.
 FIRE: 0
 #Likelihood to SOS instead of use a gag. Decimal between 1 and 0.
+SOS: 0
+#Likelihood to pass instead of use a gag. Decimal between 1 and 0.
+PASS: 0
+    ), config.ini
+}
+
+config_to_file()
+{
+    tracks := ["TU", "TR", "LU", "SO", "TH", "SQ", "DR"]
+    formatted := ""
+    for idx, val in ALLOWED_TRACKS
+    {
+        formatted := formatted . tracks[val] "|"
+    }
+
+    FileDelete, config.ini
+    FileAppend,
+    (
+#Gag levels are inclusive, eg. min and max levels will be used.
+MIN_GAG_LEVEL: %MIN_LEVEL%
+MAX_GAG_LEVEL: %MAX_LEVEL%
+#Keep separated by pipelines. Format like TU|TR|LU|SO|TH|SQ|DR|
+ALLOWED_TRACKS: %formatted%
+#Blacklisted gags. Provide coordinate pairs separated by commas and spaces, eg.
+# 1,1 5,2 3,7
+#This effectively blacklists feather, fruit pie slice, and presentation.
+BLACKLISTED_GAGS: %BLACKLISTED_GAGS%
+#Likelihood to fire instead of use a gag. Decimal between 1 and 0.
 FIRE: 0
+#Likelihood to SOS instead of use a gag. Decimal between 1 and 0.
+SOS: 0
 #Likelihood to pass instead of use a gag. Decimal between 1 and 0.
 PASS: 0
     ), config.ini

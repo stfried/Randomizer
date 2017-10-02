@@ -1,10 +1,7 @@
 isBlackListed(gag)
 {
     ;Return whether or not the given gag is blacklisted by user
-    formatted = % gag.getTrack() "," gag.getLevel()
-    IfInString, BLACKLISTED_GAGS, %formatted%
-        return 1
-    return 0
+    return not gag.isWhitelisted()
 }
 
 gagIsValid(gag)
@@ -59,9 +56,6 @@ chooseOneGag(debug=0, roulette=0)
     useable := countUseableGags()
     if (debug)
     {
-        #Persistent
-        ToolTip, DEBUG MODE
-        SetTimer, RemoveToolTip, 5000
         testGags(useable)
     }
     pickGag(useable, roulette)

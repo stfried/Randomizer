@@ -49,9 +49,6 @@ chooseOneTarget(debug=0)
     targets := findTargets()
     if (debug)
     {
-        #Persistent
-        ToolTip, DEBUG MODE
-        SetTimer, RemoveToolTip, 5000
         testTargets(targets, debug)
     }
     pickTarget(targets)
