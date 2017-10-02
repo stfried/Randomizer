@@ -45,11 +45,16 @@ ToolTip
 return
 
 SingleRoulette:
+IfWinExist, Toontown Rewritten
+    WinActivate ;
 chooseOneGag(1,1)
+Sleep 50
 chooseOneTarget(1)
 return
 
 GagCycle:
+IfWinExist, Toontown Rewritten
+    WinActivate ;
 cycleGags()
 return
 

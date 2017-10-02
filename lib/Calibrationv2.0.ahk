@@ -95,27 +95,27 @@ assignCoordinates(ByRef Input)
 coordToFile(ByRef Input)
 {
     ;Write to file
-    FileDelete, coordinates.ini
-    FileAppend, #Base Coordinate`n, coordinates.ini
-    FileAppend, % Input[TU,0,0]","Input[TU,0,1]"`n", coordinates.ini
-    FileAppend, % Input[TRAP,0,0]","Input[TRAP,0,1]"`n", coordinates.ini
-    FileAppend, % Input[LURE,0,0]","Input[LURE,0,1]"`n", coordinates.ini
-    FileAppend, % Input[SOUND,0,0]","Input[SOUND,0,1]"`n", coordinates.ini
-    FileAppend, % Input[THROW,0,0]","Input[THROW,0,1]"`n", coordinates.ini
-    FileAppend, % Input[SQUIRT,0,0]","Input[SQUIRT,0,1]"`n", coordinates.ini
-    FileAppend, % Input[DROP,0,0]","Input[DROP,0,1]"`n", coordinates.ini
-    FileAppend, % Input[THROW,1,0]","Input[THROW,1,1]"`n", coordinates.ini
-    FileAppend, % Input[THROW,2,0]","Input[THROW,2,1]"`n", coordinates.ini
-    FileAppend, % Input[THROW,3,0]","Input[THROW,3,1]"`n", coordinates.ini
-    FileAppend, % Input[THROW,4,0]","Input[THROW,4,1]"`n", coordinates.ini
-    FileAppend, % Input[THROW,5,0]","Input[THROW,5,1]"`n", coordinates.ini
-    FileAppend, % Input[THROW,6,0]","Input[THROW,6,1]"`n", coordinates.ini
-    FileAppend, % Input[EXTRA,0,0]","Input[EXTRA,0,1]"`n", coordinates.ini
-    FileAppend, % Input[EXTRA,1,0]","Input[EXTRA,1,1]"`n", coordinates.ini
-    FileAppend, % Input[EXTRA,2,0]","Input[EXTRA,2,1]"`n", coordinates.ini
-    FileAppend, % Input[TGETS,0,0]","Input[TGETS,0,1]"`n", coordinates.ini
-    FileAppend, % Input[TGETS,1,0]","Input[TGETS,1,1]"`n", coordinates.ini
-    FileAppend, % Input[TGETS,2,0]","Input[TGETS,2,1]"`n", coordinates.ini
+    FileDelete, bin\coordinates.ini
+    FileAppend, #Base Coordinate`n, bin\coordinates.ini
+    FileAppend, % Input[TU,0,0]","Input[TU,0,1]"`n", bin\coordinates.ini
+    FileAppend, % Input[TRAP,0,0]","Input[TRAP,0,1]"`n", bin\coordinates.ini
+    FileAppend, % Input[LURE,0,0]","Input[LURE,0,1]"`n", bin\coordinates.ini
+    FileAppend, % Input[SOUND,0,0]","Input[SOUND,0,1]"`n", bin\coordinates.ini
+    FileAppend, % Input[THROW,0,0]","Input[THROW,0,1]"`n", bin\coordinates.ini
+    FileAppend, % Input[SQUIRT,0,0]","Input[SQUIRT,0,1]"`n", bin\coordinates.ini
+    FileAppend, % Input[DROP,0,0]","Input[DROP,0,1]"`n", bin\coordinates.ini
+    FileAppend, % Input[THROW,1,0]","Input[THROW,1,1]"`n", bin\coordinates.ini
+    FileAppend, % Input[THROW,2,0]","Input[THROW,2,1]"`n", bin\coordinates.ini
+    FileAppend, % Input[THROW,3,0]","Input[THROW,3,1]"`n", bin\coordinates.ini
+    FileAppend, % Input[THROW,4,0]","Input[THROW,4,1]"`n", bin\coordinates.ini
+    FileAppend, % Input[THROW,5,0]","Input[THROW,5,1]"`n", bin\coordinates.ini
+    FileAppend, % Input[THROW,6,0]","Input[THROW,6,1]"`n", bin\coordinates.ini
+    FileAppend, % Input[EXTRA,0,0]","Input[EXTRA,0,1]"`n", bin\coordinates.ini
+    FileAppend, % Input[EXTRA,1,0]","Input[EXTRA,1,1]"`n", bin\coordinates.ini
+    FileAppend, % Input[EXTRA,2,0]","Input[EXTRA,2,1]"`n", bin\coordinates.ini
+    FileAppend, % Input[TGETS,0,0]","Input[TGETS,0,1]"`n", bin\coordinates.ini
+    FileAppend, % Input[TGETS,1,0]","Input[TGETS,1,1]"`n", bin\coordinates.ini
+    FileAppend, % Input[TGETS,2,0]","Input[TGETS,2,1]"`n", bin\coordinates.ini
 }
 
 inputCoordinates(ByRef Input, track, level)
