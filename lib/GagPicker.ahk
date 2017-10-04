@@ -123,9 +123,24 @@ pickGag(ByRef useable, roulette=0)
     return useable[choice]
 }
 
+isBackAvailable()
+{
+    PixelSearch Px, Py, Gags[TGETS,3].coord.getX()-5, Gags[TGETS,3].coord.getY()-5, Gags[TGETS,3].coord.getX()+5, Gags[TGETS,3].coord.getY()+5, BACK, 50, FAST|RGB
+    if ErrorLevel
+        return 0
+    return 1
+}
+
 clickBack()
 {
+    while (not isBackAvailable())
+    {
+        Sleep 50
+        if (A_Index = 10)
+            return "NO BACK"
+    }
     MouseClick, , Gags[TGETS,3].coord.getX(), Gags[TGETS,3].coord.getY()
+    return 1
 }
 
 cycleGags(debug=0)
@@ -144,11 +159,15 @@ cycleGags(debug=0)
         ;SetTimer, StopCycling, 50000
     while (RUNNING)
     {
+        MouseMove, 0, 0, 0
         if (A_Index > 1)
         {
-            clickBack()
-            Sleep 300
+            result := clickBack()
+            if (result = "NO BACK")
+                return
+            Sleep 100
         }
+        MouseMove, 0, 0, 0
         gag := pickGag(useable)
         if (gag = "NO TARGET")
         {
@@ -156,6 +175,7 @@ cycleGags(debug=0)
             RUNNING := 0
             return
         }
+        MouseMove, 0, 0, 0
         pause(debug)
         target := chooseTargetCycle(gag, attackTargets, tuTargets, lureTargets, trapTargets, attacked, tued, lured, trapped)
         ;if (target = "NO TARGET")
@@ -164,7 +184,7 @@ cycleGags(debug=0)
             ;RUNNING := 0
             ;return
         ;}
-        Sleep 300
+        Sleep 100
     }
 }
 

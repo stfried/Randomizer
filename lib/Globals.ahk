@@ -22,6 +22,7 @@ global RUNNING := 0
 global BLUE := 0x0088e3
 global GREEN := 0x448888
 global RED := 0xe35b5b
+global BACK := 0x228dfa
 
 global Gags := []
 global SosCards := []

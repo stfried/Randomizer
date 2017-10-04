@@ -39,9 +39,12 @@ Gosub, CreateGUI
 ^M::
     Menu, MainMenu, Show
 
-^R::
-    testSOSCards()
+^A::
+    MsgBox % clickBack()
+    ;testSOSCards()
+    ;pickSOS()
     ;chooseOneGag(1,1)
+    return
     
 
 RemoveToolTip:

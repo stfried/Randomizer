@@ -32,6 +32,9 @@ Gui, Add, UpDown, x122 y159 w20 h20 Range-1-100 gChanceButtons vPASS_CHANCE, %PA
 Gui, Add, Text, x2 y179 w100 h20 , SOS Chance
 Gui, Add, Edit, x102 y179 w40 h20 +ReadOnly, 
 Gui, Add, UpDown, x122 y179 w20 h20 Range-1-100 gChanceButtons vSOS_CHANCE, %SOS_CHANCE%
+Gui, Add, Text, x2 y199 w100 h20 , Doodle Chance
+Gui, Add, Edit, x102 y199 w40 h20 +ReadOnly, 
+Gui, Add, UpDown, x122 y199 w20 h20 Range-1-100 vDOODLE_CHANCE, %DOODLE_CHANCE%
 Gui, Add, Button, x72 y309 w110 h30 gSave vSave1, Save
 
 

@@ -194,6 +194,7 @@ parseConfig(Contents)
     {
         MsgBox ERROR: PASS, FIRE, AND SOS EXCEED 100`%`n PLEASE FIX YOUR CONFIG.
     }
+    readVals(DOODLE_CHANCE, Lines[17])
 }
 
 readVals(ByRef val, line, is_num="True")

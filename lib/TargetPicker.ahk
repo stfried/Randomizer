@@ -123,7 +123,7 @@ chooseTargetCycle(gag, ByRef attackTargets, ByRef tuTargets, ByRef lureTargets, 
         else
         {
             ;SOS
-            ;TODO
+            pickSOS()
         }
     }
     else if (gagIsSingleTarget(gag))
