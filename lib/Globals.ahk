@@ -7,6 +7,7 @@ global SQUIRT := 6
 global DROP := 7
 global EXTRA := 8
 global TGETS := 9
+global SOS := 10
 global MIN_LEVEL := 1
 global MAX_LEVEL := 6
 global ALLOWED_TRACKS := []
@@ -14,13 +15,16 @@ global BLACKLISTED_GAGS := ""
 global FIRE_CHANCE := 0
 global SOS_CHANCE := 0
 global PASS_CHANCE := 0
+global DOODLE_CHANCE := 0
 global RUNNING := 0
 
 
 global BLUE := 0x0088e3
 global GREEN := 0x448888
+global RED := 0xe35b5b
 
 global Gags := []
+global SosCards := []
 
 getCoords(ByRef OutputX, ByRef OutputY, Input)
 {

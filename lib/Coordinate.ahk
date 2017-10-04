@@ -25,5 +25,11 @@
         this.yC += 0
     
     }
+    
+    setAll(x_in, y_in)
+    {
+        this.setX(x_in)
+        this.setY(y_in)
+    }
 
 }

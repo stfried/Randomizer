@@ -32,6 +32,12 @@ parseCoords(ByRef Contents)
     readCoordinates(Lines, TGETS, 1, line)
     readCoordinates(Lines, TGETS, 2, line)
     readCoordinates(Lines, TGETS, 3, line)
+    
+    Loop, 9
+    {
+        readCoordinates(Lines, SOS, A_Index, line)
+    }
+
 }
 
 readCoordinates(ByRef Lines, track, level, ByRef line)
@@ -89,6 +95,24 @@ assignCoordinates(ByRef Input)
     inputCoordinates(Input, TGETS, 1)
     ToolTip, Press control over the back arrow that appears AFTER you have selected a target (if any).,0,0
     inputCoordinates(Input, TGETS, 2)
+    ToolTip, Press control over the 1st SOS card on the TOP row's CALL button.,0,0
+    inputCoordinates(Input, SOS, 1)
+    ToolTip, Press control over the 2nd SOS card on the TOP row's CALL button.,0,0
+    inputCoordinates(Input, SOS, 2)
+    ToolTip, Press control over the 3rd SOS card on the TOP row's CALL button.,0,0
+    inputCoordinates(Input, SOS, 3)
+    ToolTip, Press control over the 4th SOS card on the TOP row's CALL button.,0,0
+    inputCoordinates(Input, SOS, 4)
+    ToolTip, Press control over the 1st SOS card on the BOTTOM row's CALL button.,0,0
+    inputCoordinates(Input, SOS, 5)
+    ToolTip, Press control over the down arrow.,0,0
+    inputCoordinates(Input, SOS, 6)
+    ToolTip, Press control over your doodle's name.,0,0
+    inputCoordinates(Input, SOS, 7)
+    ToolTip, Press control over the jump.,0,0
+    inputCoordinates(Input, SOS, 8)
+    ToolTip, Press control over the last trick your doodle has.,0,0
+    inputCoordinates(Input, SOS, 9)
     CoordToFile(Input)
 }
 
@@ -116,6 +140,15 @@ coordToFile(ByRef Input)
     FileAppend, % Input[TGETS,0,0]","Input[TGETS,0,1]"`n", bin\coordinates.ini
     FileAppend, % Input[TGETS,1,0]","Input[TGETS,1,1]"`n", bin\coordinates.ini
     FileAppend, % Input[TGETS,2,0]","Input[TGETS,2,1]"`n", bin\coordinates.ini
+    FileAppend, % Input[SOS,1,0]","Input[SOS,1,1]"`n", bin\coordinates.ini
+    FileAppend, % Input[SOS,2,0]","Input[SOS,2,1]"`n", bin\coordinates.ini
+    FileAppend, % Input[SOS,3,0]","Input[SOS,3,1]"`n", bin\coordinates.ini
+    FileAppend, % Input[SOS,4,0]","Input[SOS,4,1]"`n", bin\coordinates.ini
+    FileAppend, % Input[SOS,5,0]","Input[SOS,5,1]"`n", bin\coordinates.ini
+    FileAppend, % Input[SOS,6,0]","Input[SOS,6,1]"`n", bin\coordinates.ini
+    FileAppend, % Input[SOS,7,0]","Input[SOS,7,1]"`n", bin\coordinates.ini
+    FileAppend, % Input[SOS,8,0]","Input[SOS,8,1]"`n", bin\coordinates.ini
+    FileAppend, % Input[SOS,9,0]","Input[SOS,9,1]"`n", bin\coordinates.ini
 }
 
 inputCoordinates(ByRef Input, track, level)
@@ -213,6 +246,8 @@ FIRE: 0
 SOS: 0
 #Likelihood to pass instead of use a gag. Number between 0 and 100. -1 to be treated like a gag.
 PASS: 0
+#Likelihood to use your doodle instead of an SOS card. Number between 0 and 100. -1 to be treated equally with SOS cards.
+Doodle: 100
     ), config.ini
 }
 
@@ -243,5 +278,7 @@ FIRE: %FIRE_CHANCE%
 SOS: %SOS_CHANCE%
 #Likelihood to pass instead of use a gag. Number between 0 and 100. -1 to be treated like a gag.
 PASS: %PASS_CHANCE%
+#Likelihood to use your doodle instead of an SOS card. Number between 0 and 100. -1 to be treated equally with SOS cards.
+Doodle: %DOODLE_CHANCE%
     ), config.ini
 }

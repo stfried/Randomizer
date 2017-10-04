@@ -7,6 +7,7 @@ CoordMode, ToolTip, Screen
 #Include lib\Initialization.ahk
 #Include lib\GagPicker.ahk
 #Include lib\TargetPicker.ahk
+#Include lib\SOS.ahk
 #Include lib\Menu.ahk
 
 AfterMenu:
@@ -39,7 +40,8 @@ Gosub, CreateGUI
     Menu, MainMenu, Show
 
 ^R::
-    chooseOneGag(1,1)
+    testSOSCards()
+    ;chooseOneGag(1,1)
     
 
 RemoveToolTip:

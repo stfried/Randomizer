@@ -17,6 +17,7 @@ init(forceR=0, forceC=0)
     }
     parseConfig(Contents)
     calculateCoords()
+    fillSOS()
 }
 
 reInit()
@@ -25,7 +26,10 @@ reInit()
     global MAX_LEVEL := 6
     global ALLOWED_TRACKS := []
     global BLACKLISTED_GAGS := ""
+    global FIRE_CHANCE := 0
+    global SOS_CHANCE := 0
     global PASS_CHANCE := 0
+    global DOODLE_CHANCE := 0
     global RUNNING := 0
 }
 
@@ -83,6 +87,7 @@ fillCoords(ByRef xCoords, ByRef yCoords)
         }
         track += 1
     }
+    
 }
 
 testCoords()

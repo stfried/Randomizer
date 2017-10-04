@@ -94,18 +94,18 @@ pickGag(ByRef useable, roulette=0)
     }
     else if (s_c > 0)
     {
-        Random, chance, 0, 100
-        if (chance < f_c)
+        Random, chance, 1, 100
+        if (chance <= f_c)
         {
             MouseClick, , Gags[EXTRA, 1].coord.getX(), Gags[EXTRA, 1].coord.getY()
             return Gags[EXTRA, 1]
         }
-        else if (chance < p_c)
+        else if (chance <= p_c)
         {
             MouseClick, , Gags[EXTRA, 2].coord.getX(), Gags[EXTRA, 2].coord.getY()
             return Gags[EXTRA, 2]
         }
-        else if (chance < s_c)
+        else if (chance <= s_c)
         {
             MouseClick, , Gags[EXTRA, 3].coord.getX(), Gags[EXTRA, 3].coord.getY()
             return Gags[EXTRA, 3]
