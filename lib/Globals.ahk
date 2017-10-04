@@ -11,6 +11,8 @@ global MIN_LEVEL := 1
 global MAX_LEVEL := 6
 global ALLOWED_TRACKS := []
 global BLACKLISTED_GAGS := ""
+global FIRE_CHANCE := 0
+global SOS_CHANCE := 0
 global PASS_CHANCE := 0
 global RUNNING := 0
 

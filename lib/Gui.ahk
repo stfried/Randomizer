@@ -4,27 +4,52 @@ GoTo __main__
 CreateGUI:
 Gui +AlwaysOnTop
 Gui, Add, Text, x2 y349 w250 h20 +Center, A Runic Sweller 2017
-Gui, Add, Picture, x2 y-1 w250 h50 , bin\img\logo.png
+Gui, Add, Picture, x2 y-1 w250 h50 , bin\img\logo-full.png
 Gui, Add, Text, x2 y49 w250 h20 +Center, Version 3.0
-Gui, Add, Tab, x2 y69 w250 h280 , Actions|Config
+Gui, Add, Tab, x2 y69 w250 h280 , Actions|Config|Gag Whitelist|
 Gui, Add, Button, x2 y99 w130 h30 gSingleRoulette, Single Roulette (Ctrl+Q)
 Gui, Add, Button, x2 y129 w130 h30 gGagCycle, Gag Cycle (Ctrl+W)
-Gui, Add, Button, x2 y249 w130 h30 gReCalibrate, Re-Calibrate
-Gui, Add, Button, x2 y279 w130 h30 gReConfig, Re-Config
-Gui, Add, Button, x2 y309 w130 h30 gReload, Reload
+Gui, Add, Button, x2 y189 w130 h30 gReCalibrate, Re-Calibrate
+Gui, Add, Button, x2 y219 w130 h30 gReConfig, Re-Config
+Gui, Add, Button, x2 y249 w130 h30 gReload, Reload
 Gui, Add, Button, x2 y159 w130 h30 gStopCycling, Force Stop Cycle (Ctrl+E)
+Gui, Add, Button, x2 y279 w130 h30 gGuiClose, Exit
+
+
 Gui, Tab, Config
 Gui, Add, Text, x2 y99 w100 h20 , Minimum Gag Level
-Gui, Add, Edit, x102 y99 w40 h20 , 
+Gui, Add, Edit, x102 y99 w40 h20 +ReadOnly, 
 Gui, Add, UpDown, x122 y99 w20 h20 Range1-7 gMinLButton vMIN_LEVEL, %MIN_LEVEL%
 Gui, Add, Text, x2 y119 w100 h20 , Max Gag Level
-Gui, Add, Edit, x102 y119 w40 h20 , 
+Gui, Add, Edit, x102 y119 w40 h20 +ReadOnly, 
 Gui, Add, UpDown, x122 y119 w20 h20 Range1-7 gMaxLButton vMAX_LEVEL, %MAX_LEVEL%
+Gui, Add, Text, x2 y139 w100 h20 , Fire Chance
+Gui, Add, Edit, x102 y139 w40 h20 +ReadOnly, 
+Gui, Add, UpDown, x122 y139 w20 h20 Range-1-100 gChanceButtons vFIRE_CHANCE, %FIRE_CHANCE%
+Gui, Add, Text, x2 y159 w100 h20 , Pass Chance
+Gui, Add, Edit, x102 y159 w40 h20 +ReadOnly, 
+Gui, Add, UpDown, x122 y159 w20 h20 Range-1-100 gChanceButtons vPASS_CHANCE, %PASS_CHANCE%
+Gui, Add, Text, x2 y179 w100 h20 , SOS Chance
+Gui, Add, Edit, x102 y179 w40 h20 +ReadOnly, 
+Gui, Add, UpDown, x122 y179 w20 h20 Range-1-100 gChanceButtons vSOS_CHANCE, %SOS_CHANCE%
+Gui, Add, Button, x72 y309 w110 h30 gSave vSave1, Save
+
+
+Gui, Tab, Gag Whitelist
 tracks := buildWhitelistedTracks()
-Gui, Add, ListBox, x2 y159 w100 h100 +Multi +AltSubmit gUpdateTracks vGagTracks, %tracks%
-Gui, Add, Text, x2 y139 w100 h20 , Gag Tracks
-Gui, Add, Text, x102 y139 w100 h20 , Whitelisted Gags
-Gui, Add, DropDownList, x102 y159 w100 h140 +AltSubmit gSetBoxes vDropTrack, Toonup||Trap|Lure|Sound|Throw|Squirt|Drop
+Gui, Add, ListBox, x2 y119 w100 h100 +Multi +AltSubmit gUpdateTracks vGagTracks, %tracks%
+Gui, Add, Text, x2 y99 w100 h20 , Gag Tracks
+Gui, Add, Text, x102 y99 w100 h20 , Whitelisted Gags
+Gui, Add, DropDownList, x102 y119 w100 h140 +AltSubmit gSetBoxes vDropTrack, Toonup||Trap|Lure|Sound|Throw|Squirt|Drop
+
+Gui, Add, Picture, x106 y143 w15 h15 vgImg1, bin\img\gags\1,1.png
+Gui, Add, Picture, x126 y143 w15 h15 vgImg2, bin\img\gags\1,2.png
+Gui, Add, Picture, x146 y143 w15 h15 vgImg3, bin\img\gags\1,3.png
+Gui, Add, Picture, x166 y143 w15 h15 vgImg4, bin\img\gags\1,4.png
+Gui, Add, Picture, x186 y143 w15 h15 vgImg5, bin\img\gags\1,5.png
+Gui, Add, Picture, x206 y143 w15 h15 vgImg6, bin\img\gags\1,6.png
+Gui, Add, Picture, x226 y143 w15 h15 vgImg7, bin\img\gags\1,7.png
+
 g1 := isChecked(1,1)
 g2 := isChecked(1,2)
 g3 := isChecked(1,3)
@@ -32,23 +57,24 @@ g4 := isChecked(1,4)
 g5 := isChecked(1,5)
 g6 := isChecked(1,6)
 g7 := isChecked(1,7)
-Gui, Add, Text, x102 y199 w13 h10 +Center, 1
-Gui, Add, Text, x122 y199 w13 h10 +Center, 2
-Gui, Add, Text, x142 y199 w13 h10 +Center, 3
-Gui, Add, Text, x162 y199 w13 h10 +Center, 4
-Gui, Add, Text, x182 y199 w13 h10 +Center, 5
-Gui, Add, Text, x202 y199 w13 h10 +Center, 6
-Gui, Add, Text, x222 y199 w13 h10 +Center, 7
-Gui, Add, CheckBox, x102 y179 w20 h20 gCheck vGag1 %g1%
-Gui, Add, CheckBox, x122 y179 w20 h20 gCheck vGag2 %g2%
-Gui, Add, CheckBox, x142 y179 w20 h20 gCheck vGag3 %g3%
-Gui, Add, CheckBox, x162 y179 w20 h20 gCheck vGag4 %g4%
-Gui, Add, CheckBox, x182 y179 w20 h20 gCheck vGag5 %g5%
-Gui, Add, CheckBox, x202 y179 w20 h20 gCheck vGag6 %g6%
-Gui, Add, CheckBox, x222 y179 w20 h20 gCheck vGag7 %g7%
-Gui, Add, Button, x72 y309 w100 h30 gSave, Save
-Gui, Add, Button, x102 y219 w70 h20 gWhitelistAll, Whitelist All
-Gui, Add, Button, x172 y219 w70 h20 gBlacklistAll, Blacklist All
+Gui, Add, CheckBox, x107 y159 w20 h20 gCheck vGag1 %g1%, 
+Gui, Add, CheckBox, x127 y159 w20 h20 gCheck vGag2 %g2%, 
+Gui, Add, CheckBox, x147 y159 w20 h20 gCheck vGag3 %g3%, 
+Gui, Add, CheckBox, x167 y159 w20 h20 gCheck vGag4 %g4%, 
+Gui, Add, CheckBox, x187 y159 w20 h20 gCheck vGag5 %g5%, 
+Gui, Add, CheckBox, x207 y159 w20 h20 gCheck vGag6 %g6%, 
+Gui, Add, CheckBox, x227 y159 w20 h20 gCheck vGag7 %g7%, 
+Gui, Add, Text, x107 y177 w13 h10 +Center, 1
+Gui, Add, Text, x127 y177 w13 h10 +Center, 2
+Gui, Add, Text, x147 y177 w13 h10 +Center, 3
+Gui, Add, Text, x167 y177 w13 h10 +Center, 4
+Gui, Add, Text, x187 y177 w13 h10 +Center, 5
+Gui, Add, Text, x207 y177 w13 h10 +Center, 6
+Gui, Add, Text, x227 y177 w13 h10 +Center, 7
+Gui, Add, Button, x102 y189 w70 h20 gWhitelistAll, Whitelist All
+Gui, Add, Button, x172 y189 w70 h20 gBlacklistAll, Blacklist All
+Gui, Add, Button, x72 y309 w110 h30 gSave vSave2, Save
+
 
 ; Generated using SmartGUI Creator 4.0
 Gui, Show, x0 y0 h373 w254, Gag Randomizer v3.0
@@ -98,6 +124,13 @@ GuiControl,,Gag4,%g4%
 GuiControl,,Gag5,%g5%
 GuiControl,,Gag6,%g6%
 GuiControl,,Gag7,%g7%
+GuiControl,,gImg1, bin\img\gags\%DropTrack%,1.png
+GuiControl,,gImg2, bin\img\gags\%DropTrack%,2.png
+GuiControl,,gImg3, bin\img\gags\%DropTrack%,3.png
+GuiControl,,gImg4, bin\img\gags\%DropTrack%,4.png
+GuiControl,,gImg5, bin\img\gags\%DropTrack%,5.png
+GuiControl,,gImg6, bin\img\gags\%DropTrack%,6.png
+GuiControl,,gImg7, bin\img\gags\%DropTrack%,7.png
 return
 
 UpdateTracks:
@@ -135,7 +168,30 @@ return
 
 Save:
 config_to_file()
+if (A_GuiControl = "Save1")
+{
+    GuiControl,, Save1, Saved!
+    SetTimer, Save1Timer, 3000
+}
+else
+{
+    GuiControl,, Save2, Saved!
+    SetTimer, Save2Timer, 3000
+}
 return
+
+Save1Timer:
+SetTimer, Save1Timer, Off
+GuiControl,, Save1, Save
+return
+
+Save2Timer:
+SetTimer, Save2Timer, Off
+GuiControl,, Save2, Save
+return
+
+GuiClose:
+ExitApp
 
 isChecked(track, level)
 {
@@ -202,3 +258,35 @@ fadeout:
       sleep, 1
     }
 return
+
+ChanceButtons:
+    f_c := 0
+    p_c := 0
+    s_c := 0
+    
+    if (FIRE_CHANCE > 0)
+        f_c := FIRE_CHANCE
+    if (PASS_CHANCE > 0)
+        p_c := PASS_CHANCE
+    if (SOS_CHANCE > 0)
+        s_c := SOS_CHANCE
+    ;MsgBox % f_c + p_c + s_c
+    if (f_c + p_c + s_c > 100)
+    {
+        if (A_GuiControl = "FIRE_CHANCE")
+        {
+            FIRE_CHANCE := 100 - p_c - s_c
+            GuiControl,, FIRE_CHANCE, %FIRE_CHANCE%
+        }
+        else if (A_GuiControl = "PASS_CHANCE")
+        {
+            PASS_CHANCE := 100 - f_c - s_c
+            GuiControl,, PASS_CHANCE, %PASS_CHANCE%
+        }
+        else
+        {
+            SOS_CHANCE := 100 - f_c - p_c
+            GuiControl,, SOS_CHANCE, %SOS_CHANCE%
+        }
+    }
+    return

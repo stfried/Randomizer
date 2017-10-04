@@ -142,7 +142,25 @@ parseConfig(Contents)
     getTracks(tracks)
     readVals(BLACKLISTED_GAGS, Lines[9], "False")
     StringReplace, BLACKLISTED_GAGS, BLACKLISTED_GAGS, `r
-    readVals(PASS_CHANCE, Lines[16])
+    readVals(FIRE_CHANCE, Lines[11])
+    readVals(SOS_CHANCE, Lines[13])
+    readVals(PASS_CHANCE, Lines[15])
+    f_c := 0
+    p_c := 0
+    s_c := 0
+    
+    if (FIRE_CHANCE > 0)
+        f_c += FIRE_CHANCE
+    p_c := f_c
+    if (PASS_CHANCE > 0)
+        p_c += PASS_CHANCE
+    s_c := p_c
+    if (SOS_CHANCE > 0)
+        s_c += SOS_CHANCE 
+    if (s_c > 100)
+    {
+        MsgBox ERROR: PASS, FIRE, AND SOS EXCEED 100`%`n PLEASE FIX YOUR CONFIG.
+    }
 }
 
 readVals(ByRef val, line, is_num="True")
@@ -189,11 +207,11 @@ ALLOWED_TRACKS: TU|TR|LU|SO|TH|SQ|DR|
 # 1,1 5,2 3,7
 #This effectively blacklists feather, fruit pie slice, and presentation.
 BLACKLISTED_GAGS: 
-#Likelihood to fire instead of use a gag. Decimal between 1 and 0.
+#Likelihood to fire instead of use a gag. Number between 0 and 100. -1 to be treated like a gag.
 FIRE: 0
-#Likelihood to SOS instead of use a gag. Decimal between 1 and 0.
+#Likelihood to SOS instead of use a gag. Number between 0 and 100. -1 to be treated like a gag.
 SOS: 0
-#Likelihood to pass instead of use a gag. Decimal between 1 and 0.
+#Likelihood to pass instead of use a gag. Number between 0 and 100. -1 to be treated like a gag.
 PASS: 0
     ), config.ini
 }
@@ -219,11 +237,11 @@ ALLOWED_TRACKS: %formatted%
 # 1,1 5,2 3,7
 #This effectively blacklists feather, fruit pie slice, and presentation.
 BLACKLISTED_GAGS:%BLACKLISTED_GAGS%
-#Likelihood to fire instead of use a gag. Decimal between 1 and 0.
-FIRE: 0
-#Likelihood to SOS instead of use a gag. Decimal between 1 and 0.
-SOS: 0
-#Likelihood to pass instead of use a gag. Decimal between 1 and 0.
-PASS: 0
+#Likelihood to fire instead of use a gag. Number between 0 and 100. -1 to be treated like a gag.
+FIRE: %FIRE_CHANCE%
+#Likelihood to SOS instead of use a gag. Number between 0 and 100. -1 to be treated like a gag.
+SOS: %SOS_CHANCE%
+#Likelihood to pass instead of use a gag. Number between 0 and 100. -1 to be treated like a gag.
+PASS: %PASS_CHANCE%
     ), config.ini
 }

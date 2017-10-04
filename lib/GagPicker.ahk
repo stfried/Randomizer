@@ -24,8 +24,12 @@ countUseableGags()
 {
     ;Create an array of useable gags
     useable := []
+    if (FIRE_CHANCE < 0)
+        useable.Insert(Gags[EXTRA,1])
     if (PASS_CHANCE < 0)
         useable.Insert(Gags[EXTRA,2])
+    if (SOS_CHANCE < 0)
+        useable.Insert(Gags[EXTRA,3])
     for idx, track in ALLOWED_TRACKS
     {
         level := MIN_LEVEL
@@ -63,16 +67,6 @@ chooseOneGag(debug=0, roulette=0)
 
 pickGag(ByRef useable, roulette=0)
 {
-    ;Click on a gag and return its object
-    if (PASS_CHANCE > 0)
-    {
-        Random, pass, 0, 100
-        if (pass < PASS_CHANCE)
-        {
-            MouseClick, , Gags[EXTRA, 2].coord.getX(), Gags[EXTRA, 2].coord.getY()
-            return Gags[EXTRA, 2]
-        }
-    }
     if (roulette)
     {
         Random, num, 10, 20
@@ -82,8 +76,44 @@ pickGag(ByRef useable, roulette=0)
             MouseMove, useable[choice].coord.getX(), useable[choice].coord.getY()
         }
     }
+
+    ;Click on a gag and return its object
+    f_c := 0
+    
+    if (FIRE_CHANCE > 0)
+        f_c += FIRE_CHANCE
+    p_c := f_c
+    if (PASS_CHANCE > 0)
+        p_c += PASS_CHANCE
+    s_c := p_c
+    if (SOS_CHANCE > 0)
+        s_c += SOS_CHANCE 
+    if (s_c > 100)
+    {
+        MsgBox ERROR: PASS, FIRE, AND SOS EXCEED 100`%
+    }
+    else if (s_c > 0)
+    {
+        Random, chance, 0, 100
+        if (chance < f_c)
+        {
+            MouseClick, , Gags[EXTRA, 1].coord.getX(), Gags[EXTRA, 1].coord.getY()
+            return Gags[EXTRA, 1]
+        }
+        else if (chance < p_c)
+        {
+            MouseClick, , Gags[EXTRA, 2].coord.getX(), Gags[EXTRA, 2].coord.getY()
+            return Gags[EXTRA, 2]
+        }
+        else if (chance < s_c)
+        {
+            MouseClick, , Gags[EXTRA, 3].coord.getX(), Gags[EXTRA, 3].coord.getY()
+            return Gags[EXTRA, 3]
+        }
+    }
+
     Random, choice, 1, useable.Length()
-    while (not gagIsValid(useable[choice]))
+    while (not gagIsValid(useable[useable.Length()]))
     {
         Sleep 50
         if (A_Index = 10)
@@ -128,12 +158,12 @@ cycleGags(debug=0)
         }
         pause(debug)
         target := chooseTargetCycle(gag, attackTargets, tuTargets, lureTargets, trapTargets, attacked, tued, lured, trapped)
-        if (target = "NO TARGET")
-        {
+        ;if (target = "NO TARGET")
+        ;{
             ;MsgBox NO TARGET
             ;RUNNING := 0
             ;return
-        }
+        ;}
         Sleep 300
     }
 }

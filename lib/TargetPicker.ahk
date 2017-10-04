@@ -89,6 +89,20 @@ gagIsSingleTarget(gag)
     return 0
 }
 
+singleTargetCycle(ByRef targs, ByRef doneBefore)
+{
+    if (not doneBefore)
+    {
+        debugPrint("First time using this type!", debug)
+        targs := findTargets()
+        if (targs = "NO TARGETS")
+            return targs
+        doneBefore := 1
+    }
+    testTargets(targs, debug)
+    pickTarget(targs)
+}
+
 chooseTargetCycle(gag, ByRef attackTargets, ByRef tuTargets, ByRef lureTargets, ByRef trapTargets, ByRef attacked, ByRef tued, ByRef lured, ByRef trapped, debug=0)
 {
     ;Optimized version of targeting that stores the targets from previous
@@ -96,81 +110,32 @@ chooseTargetCycle(gag, ByRef attackTargets, ByRef tuTargets, ByRef lureTargets, 
     ;also skips the process for gags that don't need a target selection
     if (gag.getTrack() = EXTRA)
     {
-        debugPrint("Pass!", debug)
-        ;Pass
-        ;TODO: Implement SOS selection
-        return
-    }
-    if (gagIsSingleTarget(gag))
-    {
-        debugPrint("Single Target!", debug)
-        if (gag.getTrack() = TOONUP)
+        if (gag.getLevel() = 1)
         {
-            if (not tued)
-            {
-                debugPrint("First time TU!", debug)
-                pause(debug)
-                tuTargets := findTargets()
-                if (tuTargets = "NO TARGETS")
-                    return "NO TARGETS"
-                tued := 1
-            }
-            debugPrint("TU!", debug)
-            pause(debug)
-            testTargets(tuTargets, debug)
-            pickTarget(tuTargets)
+            ;Fire
+            singleTargetCycle(attackTargets, attacked)
         }
-        else if (gag.getTrack() = TRAP)
+        else if (gag.getLevel() = 2)
         {
-            if (not trapped)
-            {
-                debugPrint("First time trap!", debug)
-                pause(debug)
-                trapTargets := findTargets()
-                if (trapTargets = "NO TARGETS")
-                    return "NO TARGETS"
-                trapped := 1
-            }
-            debugPrint("TRAPPED!", debug)
-            pause(debug)
-            testTargets(trapTargets, debug)
-            pickTarget(trapTargets)
-        }
-        else if (gag.getTrack() = LURE)
-        {
-            if (not lured)
-            {
-               debugPrint("First time lure!", debug)
-                pause(debug)
-                lureTargets := findTargets()
-                if (lureTargets = "NO TARGETS")
-                    return "NO TARGETS"
-                lured := 1
-            }
-            debugPrint("LURED!", debug)
-            pause(debug)
-            testTargets(lureTargets, debug)
-            pickTarget(lureTargets)
+            ;Pass
+            debugPrint("Pass!", debug)
         }
         else
         {
-            if (not attacked)
-            {
-                debugPrint("First time attack!", debug)
-                pause(debug)
-                attackTargets := findTargets()
-                if (attackTargets = "NO TARGETS")
-                    return "NO TARGETS"
-                attacked := 1
-            }
-            debugPrint("ATTACKED!", debug)
-            pause(debug)
-            testTargets(attackTargets, debug)
-            pickTarget(attackTargets)
+            ;SOS
+            ;TODO
         }
     }
-    else
+    else if (gagIsSingleTarget(gag))
     {
-        debugPrint("Group target, skipping targeting.", debug)
+        if (gag.getTrack() = TOONUP)
+            singleTargetCycle(tuTargets, tued)
+        else if (gag.getTrack() = TRAP)
+            singleTargetCycle(trapTargets, trapped)
+        else if (gag.getTrack() = LURE)
+            singleTargetCycle(lureTargets, lured)
+        else
+            singleTargetCycle(attackTargets, attacked)
     }
+    return
 }
