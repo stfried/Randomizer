@@ -57,12 +57,13 @@ testGags(ByRef useable)
 chooseOneGag(debug=0, roulette=0)
 {
     ;Count gags and then choose one
-    useable := countUseableGags()
-    if (debug)
-    {
-        testGags(useable)
-    }
-    pickGag(useable, roulette)
+    ;useable := countUseableGags()
+    ;if (debug)
+    ;{
+    ;    testGags(useable)
+    ;}
+    ;pickGag(useable, roulette)
+    cycleGags(0,1)
 }
 
 pickGag(ByRef useable, roulette=0)
@@ -143,7 +144,7 @@ clickBack()
     return 1
 }
 
-cycleGags(debug=0)
+cycleGags(debug=0, once=0)
 {
     attackTargets := []
     tuTargets := []
@@ -153,6 +154,7 @@ cycleGags(debug=0)
     trapped := 0
     attacked := 0
     tued := 0
+    MouseMove, 0, 0, 0
     useable := countUseableGags()
     RUNNING := 1
     ;if (not debug)
@@ -185,6 +187,11 @@ cycleGags(debug=0)
             ;return
         ;}
         Sleep 100
+        if (once)
+        {
+            RUNNING := 0
+            return
+        }
     }
 }
 
