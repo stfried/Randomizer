@@ -1,6 +1,5 @@
 init(forceR=0, forceC=0)
 {
-    log(A_ThisFunc)
     FileRead, Contents, bin\coordinates.ini
     if (ErrorLevel or forceR)
     {
@@ -19,12 +18,10 @@ init(forceR=0, forceC=0)
     parseConfig(Contents)
     calculateCoords()
     fillSOS()
-    log(A_ThisFunc, "VOID")
 }
 
 reInit()
 {
-    log(A_ThisFunc)
     global MIN_LEVEL := 1
     global MAX_LEVEL := 6
     global ALLOWED_TRACKS := []
@@ -34,28 +31,22 @@ reInit()
     global PASS_CHANCE := 0
     global DOODLE_CHANCE := 0
     global RUNNING := 0
-    log(A_ThisFunc, "VOID")
 }
 
 recalibrate()
 {
-    log(A_ThisFunc)
     reInit()
     init(1)
-    log(A_ThisFunc, "VOID")
 }
 
 reconfig()
 {
-    log(A_ThisFunc)
     reInit()
     init(0, 1)
-    log(A_ThisFunc, "VOID")
 }
 
 calculateCoords()
 {
-    log(A_ThisFunc)
     ;Calculate x and y coords of each given row and column
     xCoords := []
     yCoords := []
@@ -74,12 +65,10 @@ calculateCoords()
         track++
     }
     fillCoords(xCoords, yCoords)
-    log(A_ThisFunc, "VOID")
 }
 
 fillCoords(ByRef xCoords, ByRef yCoords)
 {
-    log(A_ThisFunc)
     ;Fill entire table of gag coords
     track := TOONUP
     while track <= DROP
@@ -98,12 +87,11 @@ fillCoords(ByRef xCoords, ByRef yCoords)
         }
         track += 1
     }
-    log(A_ThisFunc, "VOID")
+    
 }
 
 testCoords()
 {
-    log(A_ThisFunc)
     track := TOONUP
     while track <= DROP
     {
@@ -116,12 +104,10 @@ testCoords()
         }
         track += 1
     }
-    log(A_ThisFunc, "VOID")
 }
 
 whitelistAll()
 {
-    log(A_ThisFunc)
     BLACKLISTED_GAGS := ""
     track := TOONUP
     while track <= DROP
@@ -134,12 +120,10 @@ whitelistAll()
         }
         track += 1
     }
-    log(A_ThisFunc, "VOID")
 }
 
 blacklistAll()
 {
-    log(A_ThisFunc)
     BLACKLISTED_GAGS := ""
     track := TOONUP
     while track <= DROP
@@ -153,12 +137,10 @@ blacklistAll()
         }
         track += 1
     }
-    log(A_ThisFunc, "VOID")
 }
 
 blacklistGags()
 {
-    log(A_ThisFunc)
     Loop, Parse, BLACKLISTED_GAGS, %A_Space% 
     {
         C := []
@@ -173,5 +155,4 @@ blacklistGags()
             Gags[C[1],C[2]].blacklist()
         }
     }
-    log(A_ThisFunc, "VOID")
 }

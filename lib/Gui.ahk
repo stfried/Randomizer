@@ -2,12 +2,11 @@ GoTo __main__
 
 
 CreateGUI:
-log(A_ThisLabel)
 Gui +AlwaysOnTop
 Gui, Add, Text, x2 y349 w250 h20 +Center, A Runic Sweller 2017
 Gui, Add, Picture, x2 y-1 w250 h50 , bin\img\logo-full.png
 Gui, Add, Text, x2 y49 w250 h20 +Center, Version 3.0
-Gui, Add, Tab, x2 y69 w250 h280 , Actions|Config|Gag Whitelist|Debug|
+Gui, Add, Tab, x2 y69 w250 h280 , Actions|Config|Gag Whitelist|
 Gui, Add, Button, x2 y99 w130 h30 gSingleRoulette, Single Roulette (Ctrl+Q)
 Gui, Add, Button, x2 y129 w130 h30 gGagCycle, Gag Cycle (Ctrl+W)
 Gui, Add, Button, x2 y189 w130 h30 gReCalibrate, Re-Calibrate
@@ -35,7 +34,7 @@ Gui, Add, Edit, x102 y179 w40 h20 +ReadOnly,
 Gui, Add, UpDown, x122 y179 w20 h20 Range-1-100 gChanceButtons vSOS_CHANCE, %SOS_CHANCE%
 Gui, Add, Text, x2 y199 w100 h20 , Doodle Chance
 Gui, Add, Edit, x102 y199 w40 h20 +ReadOnly, 
-Gui, Add, UpDown, x122 y199 w20 h20 Range-1-100 gChanceButtons vDOODLE_CHANCE, %DOODLE_CHANCE%
+Gui, Add, UpDown, x122 y199 w20 h20 Range-1-100 vDOODLE_CHANCE, %DOODLE_CHANCE%
 Gui, Add, Button, x72 y309 w110 h30 gSave vSave1, Save
 
 
@@ -79,28 +78,6 @@ Gui, Add, Button, x102 y189 w70 h20 gWhitelistAll, Whitelist All
 Gui, Add, Button, x172 y189 w70 h20 gBlacklistAll, Blacklist All
 Gui, Add, Button, x72 y309 w110 h30 gSave vSave2, Save
 
-Gui, Tab, Debug
-Gui, Add, Text, x2 y99 w80 h20 , Min Level
-Gui, Add, Text, x2 y119 w80 h20 , Max Level
-Gui, Add, Text, x2 y139 w80 h20 , # of Tracks
-Gui, Add, Text, x2 y159 w80 h20 , # whitelisted
-Gui, Add, Text, x122 y99 w80 h20 , Fire Chance
-Gui, Add, Text, x122 y119 w80 h20 , Pass Chance
-Gui, Add, Text, x122 y139 w80 h20 , SOS Chance
-Gui, Add, Text, x122 y159 w80 h20 , Doodle Chance
-
-Gui, Add, Text, x82 y99 w30 h20 vDMnL, %MIN_LEVEL%
-Gui, Add, Text, x82 y119 w30 h20 vDMxL, %MAX_LEVEL%
-Gui, Add, Text, x82 y139 w30 h20 vDAT, % ALLOWED_TRACKS.LENGTH()
-Gui, Add, Text, x82 y159 w30 h20 vDWL, % 49 - numBlacklisted()
-Gui, Add, Text, x202 y99 w30 h20 vDFC, %FIRE_CHANCE%
-Gui, Add, Text, x202 y119 w30 h20 vDPC, %PASS_CHANCE%
-Gui, Add, Text, x202 y139 w30 h20 vDSC, %SOS_CHANCE%
-Gui, Add, Text, x202 y159 w30 h20 vDDC, %DOODLE_CHANCE%
-
-Gui, Add, Text, x2 y179 w230 h20 , Log
-Gui, Add, ListBox, x2 y199 w250 h140 vDLog +ReadOnly, % formatLog()
-
 
 ; Generated using SmartGUI Creator 4.0
 Gui, Show, x0 y0 h373 w254, Gag Randomizer v3.0
@@ -112,7 +89,7 @@ GUI, Show, noactivate w254 h373, %watchwin%
 increment := 90
 winset, transparent, %increment%, %watchwin%
 settimer, watchmouse, 10
-log(A_ThisLabel, "VOID")
+
 return
 
 
@@ -132,7 +109,6 @@ if (A_GuiControl = "Gag6")
     checkBox(DropTrack, 6)
 if (A_GuiControl = "Gag7")
     checkBox(DropTrack, 7)
-GuiControl,, DWL, % 49 - numBlacklisted()
 return
 
 SetBoxes:
@@ -169,37 +145,31 @@ Loop, parse, GagTracks, |
     val += 0
     ALLOWED_TRACKS.Insert(val)
 }
-GuiControl,, DAT, % ALLOWED_TRACKS.LENGTH()
 return
 
 MinLButton:
 if (MIN_LEVEL > MAX_LEVEL)
     MIN_LEVEL := MAX_LEVEL
 GuiControl,,MIN_LEVEL,%MIN_LEVEL%
-GuiControl,, DMnL, %MIN_LEVEL%
 return
 
 MaxLButton:
 if (MAX_LEVEL < MIN_LEVEL)
     MAX_LEVEL := MIN_LEVEL
 GuiControl,,MAX_LEVEL,%MAX_LEVEL%
-GuiControl,, DMxL, %MAX_LEVEL%
 return
 
 WhitelistAll:
 whitelistAll()
 Gosub, SetBoxes
-GuiControl,, DWL, % 49 - numBlacklisted()
 return
 
 BlacklistAll:
 blacklistAll()
 Gosub, SetBoxes
-GuiControl,, DWL, % 49 - numBlacklisted()
 return
 
 Save:
-log(A_ThisLabel)
 config_to_file()
 if (A_GuiControl = "Save1")
 {
@@ -211,7 +181,6 @@ else
     GuiControl,, Save2, Saved!
     SetTimer, Save2Timer, 3000
 }
-log(A_ThisLabel, "VOID")
 return
 
 Save1Timer:
@@ -225,7 +194,6 @@ GuiControl,, Save2, Save
 return
 
 GuiClose:
-log(A_ThisLabel,, 1)
 ExitApp
 
 isChecked(track, level)
@@ -295,73 +263,33 @@ fadeout:
 return
 
 ChanceButtons:
-f_c := 0
-p_c := 0
-s_c := 0
-
-if (FIRE_CHANCE > 0)
-    f_c := FIRE_CHANCE
-if (PASS_CHANCE > 0)
-    p_c := PASS_CHANCE
-if (SOS_CHANCE > 0)
-    s_c := SOS_CHANCE
-;MsgBox % f_c + p_c + s_c
-if (f_c + p_c + s_c > 100)
-{
-    if (A_GuiControl = "FIRE_CHANCE")
+    f_c := 0
+    p_c := 0
+    s_c := 0
+    
+    if (FIRE_CHANCE > 0)
+        f_c := FIRE_CHANCE
+    if (PASS_CHANCE > 0)
+        p_c := PASS_CHANCE
+    if (SOS_CHANCE > 0)
+        s_c := SOS_CHANCE
+    ;MsgBox % f_c + p_c + s_c
+    if (f_c + p_c + s_c > 100)
     {
-        FIRE_CHANCE := 100 - p_c - s_c
-        GuiControl,, FIRE_CHANCE, %FIRE_CHANCE%
+        if (A_GuiControl = "FIRE_CHANCE")
+        {
+            FIRE_CHANCE := 100 - p_c - s_c
+            GuiControl,, FIRE_CHANCE, %FIRE_CHANCE%
+        }
+        else if (A_GuiControl = "PASS_CHANCE")
+        {
+            PASS_CHANCE := 100 - f_c - s_c
+            GuiControl,, PASS_CHANCE, %PASS_CHANCE%
+        }
+        else
+        {
+            SOS_CHANCE := 100 - f_c - p_c
+            GuiControl,, SOS_CHANCE, %SOS_CHANCE%
+        }
     }
-    else if (A_GuiControl = "PASS_CHANCE")
-    {
-        PASS_CHANCE := 100 - f_c - s_c
-        GuiControl,, PASS_CHANCE, %PASS_CHANCE%
-    }
-    else if (A_GuiControl = "SOS_CHANCE")
-    {
-        SOS_CHANCE := 100 - f_c - p_c
-        GuiControl,, SOS_CHANCE, %SOS_CHANCE%
-    }
-}
-GuiControl,, DFC, %FIRE_CHANCE%
-GuiControl,, DPC, %PASS_CHANCE%
-GuiControl,, DSC, %SOS_CHANCE%
-GuiControl,, DDC, %DOODLE_CHANCE%
-return
-
-numBlacklisted()
-{
-    StringReplace, BLACKLISTED_GAGS, BLACKLISTED_GAGS, `,, `,,UseErrorLevel
-    return ErrorLevel
-}
-
-updateDebug()
-{
-;DMxL DMnL DAT DWL DFC DPC DSC DDC
-    GuiControl,, MxL, %MAX_LEVEL%
-    GuiControl,, MnL, %MIN_LEVEL%
-    GuiControl,, DAT, % ALLOWED_TRACKS.LENGTH()
-    GuiControl,, DWL, % 49 - numBlacklisted()
-    GuiControl,, DFC, %FIRE_CHANCE%
-    GuiControl,, DPC, %PASS_CHANCE%
-    GuiControl,, DSC, %SOS_CHANCE%
-    GuiControl,, DDC, %DOODLE_CHANCE%
-}
-
-formatLog()
-{
-    result := ""
-    arr := LOG.toArray()
-    for idx, val in arr
-    {
-        result := "|" val . result
-    }
-    return result
-}
-
-updateLog()
-{
-    result := formatLog()
-    GuiControl,, DLog, %result%
-}
+    return

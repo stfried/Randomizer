@@ -22,7 +22,6 @@ gagIsValid(gag)
 
 countUseableGags()
 {
-    log(A_ThisFunc)
     ;Create an array of useable gags
     useable := []
     if (FIRE_CHANCE < 0)
@@ -41,13 +40,11 @@ countUseableGags()
             level +=1
         }
     }
-    log(A_ThisFunc, "useable[]")
     return useable
 }
 
 testGags(ByRef useable)
 {
-    log(A_ThisFunc)
     ;Cycle through all useable gags to check detection is working properly
     for idx, gag in useable
     {
@@ -55,14 +52,11 @@ testGags(ByRef useable)
         ;KeyWait, Control
         ;KeyWait, Control, D
     }
-    log(A_ThisFunc, "VOID")
 }
 
 chooseOneGag(debug=0, roulette=0)
 {
-    log(A_ThisFunc)
     ;Count gags and then choose one
-<<<<<<< HEAD
     ;useable := countUseableGags()
     ;if (debug)
     ;{
@@ -70,20 +64,10 @@ chooseOneGag(debug=0, roulette=0)
     ;}
     ;pickGag(useable, roulette)
     cycleGags(0,1)
-    log(A_ThisFunc, "VOID")
-=======
-    useable := countUseableGags()
-    if (debug)
-    {
-        testGags(useable)
-    }
-    pickGag(useable, roulette)
->>>>>>> parent of 3c80ef3... Temp replacement to cycleGags
 }
 
 pickGag(ByRef useable, roulette=0)
 {
-    log(A_ThisFunc)
     if (roulette)
     {
         Random, num, 10, 20
@@ -137,7 +121,6 @@ pickGag(ByRef useable, roulette=0)
             return "NO TARGET"
     }
     MouseClick, , useable[choice].coord.getX(), useable[choice].coord.getY()
-    log(A_ThisFunc, useable[choice].getTrack() "," useable[choice].getLevel())
     return useable[choice]
 }
 
@@ -151,24 +134,18 @@ isBackAvailable()
 
 clickBack()
 {
-    log(A_ThisFunc)
     while (not isBackAvailable())
     {
         Sleep 50
         if (A_Index = 10)
-        {
-            log(A_ThisFunc, "False")
             return "NO BACK"
-        }
     }
     MouseClick, , Gags[TGETS,3].coord.getX(), Gags[TGETS,3].coord.getY()
-    log(A_ThisFunc, "True")
     return 1
 }
 
-cycleGags(debug=0)
+cycleGags(debug=0, once=0)
 {
-    log(A_ThisFunc)
     attackTargets := []
     tuTargets := []
     lureTargets := []
@@ -177,6 +154,7 @@ cycleGags(debug=0)
     trapped := 0
     attacked := 0
     tued := 0
+    MouseMove, 0, 0, 0
     useable := countUseableGags()
     RUNNING := 1
     ;if (not debug)
@@ -188,10 +166,7 @@ cycleGags(debug=0)
         {
             result := clickBack()
             if (result = "NO BACK")
-            {
-                log(A_ThisFunc, "NO BACK")
                 return
-            }
             Sleep 100
         }
         MouseMove, 0, 0, 0
@@ -200,7 +175,6 @@ cycleGags(debug=0)
         {
             ;MsgBox NO GAGS
             RUNNING := 0
-            log(A_ThisFunc, "NO GAGS")
             return
         }
         MouseMove, 0, 0, 0
@@ -213,18 +187,12 @@ cycleGags(debug=0)
             ;return
         ;}
         Sleep 100
-<<<<<<< HEAD
         if (once)
         {
             RUNNING := 0
-            log(A_ThisFunc, "Single complete")
             return
         }
-=======
->>>>>>> parent of 3c80ef3... Temp replacement to cycleGags
     }
-    log(A_ThisFunc, "Timed out")
-    return
 }
 
 pause(debug=0)

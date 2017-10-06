@@ -9,10 +9,6 @@ CoordMode, ToolTip, Screen
 #Include lib\TargetPicker.ahk
 #Include lib\SOS.ahk
 #Include lib\Menu.ahk
-#Include lib\DLinkedList.ahk
-#Include lib\Queue.ahk
-#Include lib\Stack.ahk
-#Include lib\Logger.ahk
 
 AfterMenu:
 #Include lib\Gui.ahk
@@ -24,8 +20,6 @@ blacklistGags()
 createMenu()
 buildWhitelistedTracks()
 Gosub, CreateGUI
-
-clearOldLogs()
 
 ;DEBUG
 ^Q::
@@ -45,9 +39,8 @@ clearOldLogs()
 ^M::
     Menu, MainMenu, Show
 
-^R::
-    chooseOneTarget(0)
-    ;MsgBox % clickBack()
+^A::
+    MsgBox % clickBack()
     ;testSOSCards()
     ;pickSOS()
     ;chooseOneGag(1,1)
