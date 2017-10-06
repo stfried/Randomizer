@@ -46,10 +46,7 @@ readCoordinates(ByRef Lines, track, level, ByRef line)
     ;Coords[track, level] := Lines[line]
     getCoords(X, Y, Lines[line])
     temp := new Gag
-    temp.coord.setX(X)
-    temp.coord.setY(Y)
-    temp.setTrack(track)
-    temp.setLevel(level)
+    temp.setAll(track, level, X, Y)
     Gags[track, level] := temp    
     line++
 }

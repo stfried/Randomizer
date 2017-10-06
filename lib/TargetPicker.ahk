@@ -12,16 +12,15 @@ findTargets()
     while (not Result)
     {
         Result := FindClick("lib\blue.png", temp)
-        if (A_Index = 5)
+        if (A_Index = 15)
         {
-            return "NO TARGETS"
+            return "NO TARGET"
         }
         Sleep 50
     }
     ;Sort, Result, N
     Loop, Parse, Result, `n
     {
-
         targets.Insert(A_Loopfield)
         ;GetCoords(Xc, Yc, A_LoopField)
         ;KeyWait, Control
@@ -31,11 +30,20 @@ findTargets()
     return targets
 }
 
+isTargetValid(target)
+{
+    GetCoords(X, Y, target)
+    PixelSearch Px, Py, X-5, Y-5, X+5, Y+5, TARGET, 50, FAST|RGB
+    if ErrorLevel
+        return 0
+    return 1
+}
+
 pickTarget(ByRef targets)
 {
     Random, choice, 1, targets.Length()
     GetCoords(X, Y, targets[choice])
-    MouseClick, , X,Y
+    MouseClick, , X,Y,,MOUSE_SPEED
 }
 
 testTargets(ByRef targets, debug=0)
@@ -63,47 +71,37 @@ chooseOneTarget(debug=0)
     pickTarget(targets)
 }
 
-gagIsSingleTarget(gag)
-{
-    if (gag.getTrack() != SOUND)
-    {
-        if (gag.getLevel() != 7)
-        {
-            if (gag.getTrack() == TOONUP or gag.getTrack() == LURE)
-            {
-                ;Is TU or Lure
-                if (gag.getLevel() != 2 and gag.getLevel() != 4 and gag.getLevel() != 6)
-                {
-                    ;Is single target TU or Lure
-                    return 1
-                }
-                ;Is multi-target TU or Lure
-                return 0
-            }
-            else
-            {
-                return 1
-            }
-        }
-    }
-    return 0
-}
-
 singleTargetCycle(ByRef targs, ByRef doneBefore)
 {
     if (not doneBefore)
     {
         debugPrint("First time using this type!", debug)
         targs := findTargets()
-        if (targs = "NO TARGETS")
+        if (targs = "NO TARGET")
+        {
             return targs
+        }
         doneBefore := 1
     }
-    testTargets(targs, debug)
+    ;testTargets(targs, debug)
+    ;while (not isTargetValid(targs[targs.Length()]))
+    ;{
+    ;    Sleep 50
+    ;    if (A_Index = 15)
+    ;    {
+    ;        MsgBox TARGET NOT FOUND
+    ;        return
+    ;    }
+    ;    if (isBackAvailable())
+    ;    {
+    ;        MouseClick, , Gags[TGETS,3].coord.getX(), Gags[TGETS,3].coord.getY(),,MOUSE_SPEED
+    ;        return
+    ;    }
+    ;}
     pickTarget(targs)
 }
 
-chooseTargetCycle(gag, ByRef attackTargets, ByRef tuTargets, ByRef lureTargets, ByRef trapTargets, ByRef attacked, ByRef tued, ByRef lured, ByRef trapped, debug=0)
+chooseTargetCycle(gag, ByRef attackTargets, ByRef tuTargets, ByRef lureTargets, ByRef trapTargets, ByRef fireTargets, ByRef attacked, ByRef tued, ByRef lured, ByRef trapped, ByRef fired, debug=0)
 {
     ;Optimized version of targeting that stores the targets from previous
     ;gag selections for both attack gags and tu gags
@@ -113,12 +111,7 @@ chooseTargetCycle(gag, ByRef attackTargets, ByRef tuTargets, ByRef lureTargets, 
         if (gag.getLevel() = 1)
         {
             ;Fire
-            singleTargetCycle(attackTargets, attacked)
-        }
-        else if (gag.getLevel() = 2)
-        {
-            ;Pass
-            debugPrint("Pass!", debug)
+            singleTargetCycle(fireTargets, fired)
         }
         else
         {
@@ -126,16 +119,16 @@ chooseTargetCycle(gag, ByRef attackTargets, ByRef tuTargets, ByRef lureTargets, 
             pickSOS()
         }
     }
-    else if (gagIsSingleTarget(gag))
+    else if (gag.isSingleTarget())
     {
         if (gag.getTrack() = TOONUP)
-            singleTargetCycle(tuTargets, tued)
+            targ := singleTargetCycle(tuTargets, tued)
         else if (gag.getTrack() = TRAP)
-            singleTargetCycle(trapTargets, trapped)
+            targ :=singleTargetCycle(trapTargets, trapped)
         else if (gag.getTrack() = LURE)
-            singleTargetCycle(lureTargets, lured)
+            targ := singleTargetCycle(lureTargets, lured)
         else
-            singleTargetCycle(attackTargets, attacked)
+            targ := singleTargetCycle(attackTargets, attacked)
     }
-    return
+    return targ
 }

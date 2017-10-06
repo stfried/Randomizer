@@ -40,7 +40,7 @@ Gosub, CreateGUI
     Menu, MainMenu, Show
 
 ^A::
-    MsgBox % clickBack()
+    ;MsgBox % clickBack()
     ;testSOSCards()
     ;pickSOS()
     ;chooseOneGag(1,1)

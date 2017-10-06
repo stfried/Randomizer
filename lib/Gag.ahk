@@ -4,6 +4,7 @@
     track := 0
     level := 0
     whitelisted := 1
+    singleTarget := 0
     
     getTrack()
     {
@@ -27,12 +28,18 @@
         this.level += 0
     }
     
+    isSingleTarget()
+    {
+        return this.singleTarget
+    }
+    
     setAll(t_in, l_in, x_in, y_in)
     {
         this.track := t_in
         this.level := l_in
         this.coord.setX(x_in)
         this.coord.setY(y_in)
+        this.singleTarget := gagIsSingleTarget(this)
     }
     
     blacklist()
@@ -60,7 +67,35 @@
     {
         return % this.track " " this.level " " this.coord.getX() " " this.coord.getY() " " this.whitelisted
     }
+    
+    
 
+}
+
+gagIsSingleTarget(gag)
+{
+    if (gag.getTrack() != SOUND)
+    {
+        if (gag.getLevel() != 7)
+        {
+            if (gag.getTrack() = TOONUP or gag.getTrack() = LURE)
+            {
+                ;Is TU or Lure
+                if (gag.getLevel() != 2 and gag.getLevel() != 4 and gag.getLevel() != 6)
+                {
+                    ;Is single target TU or Lure
+                    return 1
+                }
+                ;Is multi-target TU or Lure
+                return 0
+            }
+            else if (gag.getTrack() = EXTRA and gag.getLevel() = 2)
+                return 0
+            else
+                return 1
+        }
+    }
+    return 0
 }
 
 GAGS_TESTING()

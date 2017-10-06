@@ -98,17 +98,17 @@ pickGag(ByRef useable, roulette=0)
         Random, chance, 1, 100
         if (chance <= f_c)
         {
-            MouseClick, , Gags[EXTRA, 1].coord.getX(), Gags[EXTRA, 1].coord.getY()
+            MouseClick, , Gags[EXTRA, 1].coord.getX(), Gags[EXTRA, 1].coord.getY(),,MOUSE_SPEED
             return Gags[EXTRA, 1]
         }
         else if (chance <= p_c)
         {
-            MouseClick, , Gags[EXTRA, 2].coord.getX(), Gags[EXTRA, 2].coord.getY()
+            MouseClick, , Gags[EXTRA, 2].coord.getX(), Gags[EXTRA, 2].coord.getY(),,MOUSE_SPEED
             return Gags[EXTRA, 2]
         }
         else if (chance <= s_c)
         {
-            MouseClick, , Gags[EXTRA, 3].coord.getX(), Gags[EXTRA, 3].coord.getY()
+            MouseClick, , Gags[EXTRA, 3].coord.getX(), Gags[EXTRA, 3].coord.getY(),,MOUSE_SPEED
             return Gags[EXTRA, 3]
         }
     }
@@ -117,10 +117,15 @@ pickGag(ByRef useable, roulette=0)
     while (not gagIsValid(useable[useable.Length()]))
     {
         Sleep 50
-        if (A_Index = 10)
+        if (A_Index = 20)
             return "NO TARGET"
+        if (isBackAvailable())
+        {
+            MouseClick, , Gags[TGETS,3].coord.getX(), Gags[TGETS,3].coord.getY(),,MOUSE_SPEED
+            break
+        }
     }
-    MouseClick, , useable[choice].coord.getX(), useable[choice].coord.getY()
+    MouseClick, , useable[choice].coord.getX(), useable[choice].coord.getY(),,MOUSE_SPEED
     return useable[choice]
 }
 
@@ -132,15 +137,17 @@ isBackAvailable()
     return 1
 }
 
-clickBack()
+clickBack(ByRef useable)
 {
     while (not isBackAvailable())
     {
         Sleep 50
-        if (A_Index = 10)
+        if (A_Index = 15)
             return "NO BACK"
+        if (gagIsValid(useable[useable.Length()]))
+            return 1
     }
-    MouseClick, , Gags[TGETS,3].coord.getX(), Gags[TGETS,3].coord.getY()
+    MouseClick, , Gags[TGETS,3].coord.getX(), Gags[TGETS,3].coord.getY(),,MOUSE_SPEED
     return 1
 }
 
@@ -150,10 +157,13 @@ cycleGags(debug=0, once=0)
     tuTargets := []
     lureTargets := []
     trapTargets := []
+    fireTargets := []
     lured := 0
     trapped := 0
     attacked := 0
     tued := 0
+    fired := 0
+    single_cog := 0
     MouseMove, 0, 0, 0
     useable := countUseableGags()
     RUNNING := 1
@@ -164,46 +174,40 @@ cycleGags(debug=0, once=0)
         MouseMove, 0, 0, 0
         if (A_Index > 1)
         {
-            result := clickBack()
+            result := clickBack(useable)
             if (result = "NO BACK")
+            {
+                MsgBox NO BACK
                 return
-            Sleep 100
+            }
+            Sleep 150
         }
         MouseMove, 0, 0, 0
         gag := pickGag(useable)
         if (gag = "NO TARGET")
         {
-            ;MsgBox NO GAGS
+            MsgBox NO GAGS
             RUNNING := 0
             return
         }
         MouseMove, 0, 0, 0
-        pause(debug)
-        target := chooseTargetCycle(gag, attackTargets, tuTargets, lureTargets, trapTargets, attacked, tued, lured, trapped)
-        ;if (target = "NO TARGET")
-        ;{
-            ;MsgBox NO TARGET
-            ;RUNNING := 0
-            ;return
-        ;}
         Sleep 100
+        if (gag.isSingleTarget() and not single_cog)
+        {
+            ;Targeting
+            target := chooseTargetCycle(gag, attackTargets, tuTargets, lureTargets, trapTargets, fireTargets, attacked, tued, lured, trapped, fired)
+            if (target = "NO TARGET")
+            {
+                single_cog := 1
+                attacked := 0
+            }
+            Sleep 100
+        }
         if (once)
         {
             RUNNING := 0
             return
         }
-    }
-}
-
-pause(debug=0)
-{
-    if (debug)
-    {
-        KeyWait, Control
-        KeyWait, Control, D
-    }
-    else
-    {
-        Sleep 50
+        Sleep 100
     }
 }

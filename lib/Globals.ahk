@@ -17,12 +17,14 @@ global SOS_CHANCE := 0
 global PASS_CHANCE := 0
 global DOODLE_CHANCE := 0
 global RUNNING := 0
+global MOUSE_SPEED := 2
 
 
 global BLUE := 0x0088e3
 global GREEN := 0x448888
 global RED := 0xe35b5b
 global BACK := 0x228dfa
+global TARGET := 0x4f6ee9
 
 global Gags := []
 global SosCards := []

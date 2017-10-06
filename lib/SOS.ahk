@@ -40,7 +40,7 @@ pickSOS()
             }
     }
     Random, presses, 0, 4
-    MouseClick,, Gags[SOS,6].coord.getX(), Gags[SOS,6].coord.getY(), presses
+    MouseClick,, Gags[SOS,6].coord.getX(), Gags[SOS,6].coord.getY(), presses, MOUSE_SPEED
     Sleep 50
     Random, card, 1, 8
     while not isCardValid(SosCards[card])
@@ -52,7 +52,7 @@ pickSOS()
             return
         }
     }
-    MouseClick,, SosCards[card].getX(), SosCards[card].getY()
+    MouseClick,, SosCards[card].getX(), SosCards[card].getY(),,MOUSE_SPEED
     return
 }
 
@@ -78,5 +78,5 @@ doodleTrick()
     MouseClick,, Gags[SOS,7].coord.getX(), Gags[SOS,7].coord.getY()
     Sleep 50
     Random, y_c, Gags[SOS,8].coord.getY(), Gags[SOS,9].coord.getY()
-    MouseClick,, Gags[SOS,8].coord.getX(), y_c
+    MouseClick,, Gags[SOS,8].coord.getX(), y_c,,MOUSE_SPEED
 }
