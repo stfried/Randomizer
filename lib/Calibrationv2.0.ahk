@@ -1,11 +1,14 @@
 setup()
 {
+    log(A_ThisFunc)
     Input := Object()
     assignCoordinates(Input)  
+    log(A_ThisFunc, "VOID")
 }
 
 parseCoords(ByRef Contents)
 {
+    log(A_ThisFunc)
     ;Read the coordinates.ini
     Lines := Object()
     Loop, parse, Contents, `n
@@ -37,6 +40,7 @@ parseCoords(ByRef Contents)
     {
         readCoordinates(Lines, SOS, A_Index, line)
     }
+    log(A_ThisFunc, "VOID")
 
 }
 
@@ -56,6 +60,7 @@ readCoordinates(ByRef Lines, track, level, ByRef line)
 
 assignCoordinates(ByRef Input)
 {
+    log(A_ThisFunc)
     ;Get user to calibrate positions
     ToolTip, Press control over the right side of the feather button.,0,0
     inputCoordinates(Input, TU, 0)
@@ -114,10 +119,13 @@ assignCoordinates(ByRef Input)
     ToolTip, Press control over the last trick your doodle has.,0,0
     inputCoordinates(Input, SOS, 9)
     CoordToFile(Input)
+    log(A_ThisFunc, "VOID")
+
 }
 
 coordToFile(ByRef Input)
 {
+    log(A_ThisFunc)
     ;Write to file
     FileDelete, bin\coordinates.ini
     FileAppend, #Base Coordinate`n, bin\coordinates.ini
@@ -149,6 +157,7 @@ coordToFile(ByRef Input)
     FileAppend, % Input[SOS,7,0]","Input[SOS,7,1]"`n", bin\coordinates.ini
     FileAppend, % Input[SOS,8,0]","Input[SOS,8,1]"`n", bin\coordinates.ini
     FileAppend, % Input[SOS,9,0]","Input[SOS,9,1]"`n", bin\coordinates.ini
+    log(A_ThisFunc, "VOID")
 }
 
 inputCoordinates(ByRef Input, track, level)
@@ -164,6 +173,7 @@ inputCoordinates(ByRef Input, track, level)
 
 parseConfig(Contents)
 {
+    log(A_ThisFunc)
     Lines := Object()
     Loop, parse, Contents, `n
     {
@@ -195,6 +205,7 @@ parseConfig(Contents)
         MsgBox ERROR: PASS, FIRE, AND SOS EXCEED 100`%`n PLEASE FIX YOUR CONFIG.
     }
     readVals(DOODLE_CHANCE, Lines[17])
+    log(A_ThisFunc, "VOID")
 }
 
 readVals(ByRef val, line, is_num="True")
@@ -229,6 +240,7 @@ getTracks(raw_text)
 
 config()
 {
+    log(A_ThisFunc)
     FileDelete, config.ini
     FileAppend,
     (
@@ -250,10 +262,12 @@ PASS: 0
 #Likelihood to use your doodle instead of an SOS card. Number between 0 and 100. -1 to be treated equally with SOS cards.
 Doodle: 100
     ), config.ini
+    log(A_ThisFunc, "VOID")
 }
 
 config_to_file()
 {
+    log(A_ThisFunc)
     tracks := ["TU", "TR", "LU", "SO", "TH", "SQ", "DR"]
     formatted := ""
     for idx, val in ALLOWED_TRACKS
@@ -282,4 +296,5 @@ PASS: %PASS_CHANCE%
 #Likelihood to use your doodle instead of an SOS card. Number between 0 and 100. -1 to be treated equally with SOS cards.
 Doodle: %DOODLE_CHANCE%
     ), config.ini
+    log(A_ThisFunc, "VOID")
 }

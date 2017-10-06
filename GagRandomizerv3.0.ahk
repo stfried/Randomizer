@@ -9,6 +9,10 @@ CoordMode, ToolTip, Screen
 #Include lib\TargetPicker.ahk
 #Include lib\SOS.ahk
 #Include lib\Menu.ahk
+#Include lib\DLinkedList.ahk
+#Include lib\Queue.ahk
+#Include lib\Stack.ahk
+#Include lib\Logger.ahk
 
 AfterMenu:
 #Include lib\Gui.ahk
@@ -39,8 +43,8 @@ Gosub, CreateGUI
 ^M::
     Menu, MainMenu, Show
 
-^A::
-    MsgBox % clickBack()
+^R::
+    ;MsgBox % clickBack()
     ;testSOSCards()
     ;pickSOS()
     ;chooseOneGag(1,1)

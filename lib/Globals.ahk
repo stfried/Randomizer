@@ -17,6 +17,12 @@ global SOS_CHANCE := 0
 global PASS_CHANCE := 0
 global DOODLE_CHANCE := 0
 global RUNNING := 0
+global LOG := new Queue
+global CALLSTACK := new Queue
+global LOG_LENGTH := 10
+tmp := A_Now
+FormatTime, tmp, %tmp%, yyyy-MM-dd HH.mm.ss
+global LOGFILE := "logs/" tmp "_log.txt"
 
 
 global BLUE := 0x0088e3
