@@ -62,6 +62,7 @@ chooseOneGag(debug=0, roulette=0)
 {
     log(A_ThisFunc)
     ;Count gags and then choose one
+<<<<<<< HEAD
     ;useable := countUseableGags()
     ;if (debug)
     ;{
@@ -70,6 +71,14 @@ chooseOneGag(debug=0, roulette=0)
     ;pickGag(useable, roulette)
     cycleGags(0,1)
     log(A_ThisFunc, "VOID")
+=======
+    useable := countUseableGags()
+    if (debug)
+    {
+        testGags(useable)
+    }
+    pickGag(useable, roulette)
+>>>>>>> parent of 3c80ef3... Temp replacement to cycleGags
 }
 
 pickGag(ByRef useable, roulette=0)
@@ -157,7 +166,7 @@ clickBack()
     return 1
 }
 
-cycleGags(debug=0, once=0)
+cycleGags(debug=0)
 {
     log(A_ThisFunc)
     attackTargets := []
@@ -168,7 +177,6 @@ cycleGags(debug=0, once=0)
     trapped := 0
     attacked := 0
     tued := 0
-    MouseMove, 0, 0, 0
     useable := countUseableGags()
     RUNNING := 1
     ;if (not debug)
@@ -205,12 +213,15 @@ cycleGags(debug=0, once=0)
             ;return
         ;}
         Sleep 100
+<<<<<<< HEAD
         if (once)
         {
             RUNNING := 0
             log(A_ThisFunc, "Single complete")
             return
         }
+=======
+>>>>>>> parent of 3c80ef3... Temp replacement to cycleGags
     }
     log(A_ThisFunc, "Timed out")
     return
