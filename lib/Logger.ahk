@@ -1,40 +1,43 @@
 log(action, ret="NOTRET", no_stack=0)
 {
-    FormatTime, formatted, %A_Now%, HH:mm:ss|
-    if (ret != "NOTRET")
+    if (DEBUG_MODE)
     {
-        ;Function returned a value
-        action := fetch_stack() " returned "
-        if (ret != "VOID")
+        FormatTime, formatted, %A_Now%, HH:mm:ss|
+        if (ret != "NOTRET")
         {
-            ;Function returned nothing
-            action := action . return
+            ;Function returned a value
+            action := fetch_stack() " returned "
+            if (ret != "VOID")
+            {
+                ;Function returned nothing
+                action := action . return
+            }
+            ;Dequeue
+            CALLSTACK.dequeue()
+            LOG.enqueue(action)
+            enforce_log_size()
+            formatted := formatted . action
+            FileAppend, % formatted "`n", %LOGFILE%
+            return
         }
-        ;Dequeue
-        CALLSTACK.dequeue()
-        LOG.enqueue(action)
+        if (CALLSTACK.length > 0)
+            LOG.enqueue(fetch_stack() ":" action)
+        else
+            LOG.enqueue(action)
         enforce_log_size()
-        formatted := formatted . action
+        if (no_stack)
+        {
+            ;Do not push to stack
+            formatted := formatted . action
+        }
+        else
+        {
+            ;New function call
+            CALLSTACK.enqueue(action)
+            formatted := formatted . fetch_stack()
+        }
         FileAppend, % formatted "`n", %LOGFILE%
-        return
     }
-    if (CALLSTACK.length > 0)
-        LOG.enqueue(fetch_stack() ":" action)
-    else
-        LOG.enqueue(action)
-    enforce_log_size()
-    if (no_stack)
-    {
-        ;Do not push to stack
-        formatted := formatted . action
-    }
-    else
-    {
-        ;New function call
-        CALLSTACK.enqueue(action)
-        formatted := formatted . fetch_stack()
-    }
-    FileAppend, % formatted "`n", %LOGFILE%
 }
 
 enforce_log_size()

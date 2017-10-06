@@ -19,8 +19,9 @@ global DOODLE_CHANCE := 0
 global RUNNING := 0
 global LOG := new Queue
 global CALLSTACK := new Stack
-global LOG_LENGTH := 11
+global LOG_LENGTH := 20
 global MAX_LOGS := 30
+global DEBUG_MODE := 0
 tmp := A_Now
 FormatTime, tmp, %tmp%, yyyy-MM-dd HH.mm.ss
 global LOGFILE := "logs/" tmp "_log.txt"

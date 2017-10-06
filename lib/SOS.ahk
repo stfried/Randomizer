@@ -1,5 +1,6 @@
 fillSOS()
 {
+    log(A_ThisFunc)
     xVals := []
     yVals := []
     Loop, 4
@@ -21,10 +22,12 @@ fillSOS()
         }
         y_index++
     }
+    log(A_ThisFunc, "VOID")
 }
 
 pickSOS()
 {
+    log(A_ThisFunc)
     if (DOODLE_CHANCE != 0)
     {
         dc := 0
@@ -53,6 +56,7 @@ pickSOS()
         }
     }
     MouseClick,, SosCards[card].getX(), SosCards[card].getY()
+    log(A_ThisFunc, "VOID")
     return
 }
 
@@ -66,17 +70,21 @@ isCardValid(coord)
 
 testSOSCards()
 {
+    log(A_ThisFunc)
     Loop, 8
     {
         if (isCardValid(SosCards[A_Index]))
             MouseMove, SosCards[A_Index].getX(), SosCards[A_Index].getY()
     }
+    log(A_ThisFunc, "VOID")
 }
 
 doodleTrick()
 {
+    log(A_ThisFunc)
     MouseClick,, Gags[SOS,7].coord.getX(), Gags[SOS,7].coord.getY()
     Sleep 50
     Random, y_c, Gags[SOS,8].coord.getY(), Gags[SOS,9].coord.getY()
     MouseClick,, Gags[SOS,8].coord.getX(), y_c
+    log(A_ThisFunc, "VOID")
 }

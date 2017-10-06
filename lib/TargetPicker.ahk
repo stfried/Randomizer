@@ -1,5 +1,6 @@
 findTargets()
 {
+    log(A_ThisFunc)
     targets := []
     xPos := gags[TGETS,1].coord.getX()
     yPos := gags[TGETS,1].coord.getY()
@@ -28,6 +29,7 @@ findTargets()
         ;MouseMove, Xc, Yc
         ;KeyWait, Control, D
     }
+    log(A_ThisFunc, "targets[]")
     return targets
 }
 
@@ -40,6 +42,7 @@ pickTarget(ByRef targets)
 
 testTargets(ByRef targets, debug=0)
 {
+    log(A_ThisFunc)
     ;Cycle through all targets to check detection is working properly
     if (debug)
     {
@@ -51,16 +54,19 @@ testTargets(ByRef targets, debug=0)
             ;KeyWait, Control, D
         }
     }
+    log(A_ThisFunc, "VOID")
 }
 
 chooseOneTarget(debug=0)
 {
+    log(A_ThisFunc, "VOID")
     targets := findTargets()
     if (debug)
     {
         testTargets(targets, debug)
     }
     pickTarget(targets)
+    log(A_ThisFunc, "VOID")
 }
 
 gagIsSingleTarget(gag)
@@ -78,10 +84,12 @@ gagIsSingleTarget(gag)
                     return 1
                 }
                 ;Is multi-target TU or Lure
+                log(A_ThisFunc, "False")
                 return 0
             }
             else
             {
+                log(A_ThisFunc, "True")
                 return 1
             }
         }
@@ -93,7 +101,7 @@ singleTargetCycle(ByRef targs, ByRef doneBefore)
 {
     if (not doneBefore)
     {
-        debugPrint("First time using this type!", debug)
+        ;debugPrint("First time using this type!", debug)
         targs := findTargets()
         if (targs = "NO TARGETS")
             return targs
@@ -108,6 +116,7 @@ chooseTargetCycle(gag, ByRef attackTargets, ByRef tuTargets, ByRef lureTargets, 
     ;Optimized version of targeting that stores the targets from previous
     ;gag selections for both attack gags and tu gags
     ;also skips the process for gags that don't need a target selection
+    log(A_ThisFunc)
     if (gag.getTrack() = EXTRA)
     {
         if (gag.getLevel() = 1)
@@ -137,5 +146,6 @@ chooseTargetCycle(gag, ByRef attackTargets, ByRef tuTargets, ByRef lureTargets, 
         else
             singleTargetCycle(attackTargets, attacked)
     }
+    log(A_ThisFunc, "VOID")
     return
 }

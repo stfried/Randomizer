@@ -46,6 +46,7 @@ clearOldLogs()
     Menu, MainMenu, Show
 
 ^R::
+    chooseOneTarget(0)
     ;MsgBox % clickBack()
     ;testSOSCards()
     ;pickSOS()

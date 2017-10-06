@@ -99,7 +99,7 @@ Gui, Add, Text, x202 y139 w30 h20 vDSC, %SOS_CHANCE%
 Gui, Add, Text, x202 y159 w30 h20 vDDC, %DOODLE_CHANCE%
 
 Gui, Add, Text, x2 y179 w230 h20 , Log
-Gui, Add, ListBox, x2 y199 w230 h140 vDLog +ReadOnly, % formatLog()
+Gui, Add, ListBox, x2 y199 w250 h140 vDLog +ReadOnly, % formatLog()
 
 
 ; Generated using SmartGUI Creator 4.0
@@ -199,7 +199,7 @@ GuiControl,, DWL, % 49 - numBlacklisted()
 return
 
 Save:
-Log(A_ThisLabel)
+log(A_ThisLabel)
 config_to_file()
 if (A_GuiControl = "Save1")
 {
