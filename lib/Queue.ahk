@@ -17,5 +17,13 @@ class Queue extends DLinkedList
 		else
 			return false
 	}
+    
+    pprint()
+    {
+        res := ""
+        Loop, % this.length
+            res := res . this.get(A_index) ", "
+        return res
+    }
 	
 }

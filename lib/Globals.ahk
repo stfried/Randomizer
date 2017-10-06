@@ -18,8 +18,9 @@ global PASS_CHANCE := 0
 global DOODLE_CHANCE := 0
 global RUNNING := 0
 global LOG := new Queue
-global CALLSTACK := new Queue
-global LOG_LENGTH := 10
+global CALLSTACK := new Stack
+global LOG_LENGTH := 11
+global MAX_LOGS := 30
 tmp := A_Now
 FormatTime, tmp, %tmp%, yyyy-MM-dd HH.mm.ss
 global LOGFILE := "logs/" tmp "_log.txt"

@@ -25,6 +25,8 @@ createMenu()
 buildWhitelistedTracks()
 Gosub, CreateGUI
 
+clearOldLogs()
+
 ;DEBUG
 ^Q::
     Gosub SingleRoulette

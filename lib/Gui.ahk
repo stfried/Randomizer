@@ -98,6 +98,9 @@ Gui, Add, Text, x202 y119 w30 h20 vDPC, %PASS_CHANCE%
 Gui, Add, Text, x202 y139 w30 h20 vDSC, %SOS_CHANCE%
 Gui, Add, Text, x202 y159 w30 h20 vDDC, %DOODLE_CHANCE%
 
+Gui, Add, Text, x2 y179 w230 h20 , Log
+Gui, Add, ListBox, x2 y199 w230 h140 vDLog +ReadOnly, % formatLog()
+
 
 ; Generated using SmartGUI Creator 4.0
 Gui, Show, x0 y0 h373 w254, Gag Randomizer v3.0
@@ -344,4 +347,21 @@ updateDebug()
     GuiControl,, DPC, %PASS_CHANCE%
     GuiControl,, DSC, %SOS_CHANCE%
     GuiControl,, DDC, %DOODLE_CHANCE%
+}
+
+formatLog()
+{
+    result := ""
+    arr := LOG.toArray()
+    for idx, val in arr
+    {
+        result := "|" val . result
+    }
+    return result
+}
+
+updateLog()
+{
+    result := formatLog()
+    GuiControl,, DLog, %result%
 }

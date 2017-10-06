@@ -1,6 +1,6 @@
 log(action, ret="NOTRET", no_stack=0)
 {
-    FormatTime, formatted, %A_Now%, HH:mm:ss:
+    FormatTime, formatted, %A_Now%, HH:mm:ss|
     if (ret != "NOTRET")
     {
         ;Function returned a value
@@ -18,8 +18,10 @@ log(action, ret="NOTRET", no_stack=0)
         FileAppend, % formatted "`n", %LOGFILE%
         return
     }
-    ;Log action in queue
-    LOG.enqueue(action)
+    if (CALLSTACK.length > 0)
+        LOG.enqueue(fetch_stack() ":" action)
+    else
+        LOG.enqueue(action)
     enforce_log_size()
     if (no_stack)
     {
@@ -37,8 +39,9 @@ log(action, ret="NOTRET", no_stack=0)
 
 enforce_log_size()
 {
-    if log_size.length > LOG_LENGTH
-        log.dequeue()
+    if LOG.length > LOG_LENGTH
+        LOG.dequeue()
+    updateLog()
 }
 
 fetch_stack()
@@ -50,7 +53,21 @@ fetch_stack()
         if (idx = 1)
             result := val
         else
-            result := result ":" val
+            result := val ":" result
     }
     return result
+}
+
+clearOldLogs()
+{
+    num_logs := ComObjCreate("Scripting.FileSystemObject").GetFolder("logs").Files.Count
+    if (num_logs > MAX_LOGS)
+    {
+        Loop, Files, %A_WorkingDir%\logs\*log.txt
+        {
+            FileDelete %A_WorkingDir%\logs\%A_LoopFileName%
+            if (A_Index = num_logs - MAX_LOGS)
+                return
+        }
+    }
 }
