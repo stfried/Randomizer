@@ -5,15 +5,16 @@ CreateGUI:
 Gui +AlwaysOnTop
 Gui, Add, Text, x2 y349 w250 h20 +Center, A Runic Sweller 2017
 Gui, Add, Picture, x2 y-1 w250 h50 , bin\img\logo-full.png
-Gui, Add, Text, x2 y49 w250 h20 +Center, Version 3.0
+Gui, Add, Text, x2 y49 w250 h20 +Center, Version 3.0.1
 Gui, Add, Tab, x2 y69 w250 h280 , Actions|Config|Gag Whitelist|
 Gui, Add, Button, x2 y99 w130 h30 gSingleRoulette, Single Roulette (Ctrl+Q)
 Gui, Add, Button, x2 y129 w130 h30 gGagCycle, Gag Cycle (Ctrl+W)
-Gui, Add, Button, x2 y189 w130 h30 gReCalibrate, Re-Calibrate
-Gui, Add, Button, x2 y219 w130 h30 gReConfig, Re-Config
-Gui, Add, Button, x2 y249 w130 h30 gReload, Reload
 Gui, Add, Button, x2 y159 w130 h30 gStopCycling, Force Stop Cycle (Ctrl+E)
-Gui, Add, Button, x2 y279 w130 h30 gGuiClose, Exit
+Gui, Add, Button, x2 y189 w130 h30 gSayRandom, Say Random (Ctrl+A)
+Gui, Add, Button, x2 y219 w130 h30 gReCalibrate, Re-Calibrate
+Gui, Add, Button, x2 y249 w130 h30 gReConfig, Re-Config
+Gui, Add, Button, x2 y279 w130 h30 gReload, Reload
+Gui, Add, Button, x2 y309 w130 h30 gGuiClose, Exit
 
 
 Gui, Tab, Config

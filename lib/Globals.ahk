@@ -18,6 +18,9 @@ global PASS_CHANCE := 0
 global DOODLE_CHANCE := 0
 global RUNNING := 0
 global MOUSE_SPEED := 2
+global WINDOW_LEN = 394
+global CHAR_WIDTHS := []
+global NUM_LINES := 53242
 
 
 global BLUE := 0x0088e3

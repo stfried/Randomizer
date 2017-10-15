@@ -177,7 +177,7 @@ cycleGags(debug=0, once=0)
             result := clickBack(useable)
             if (result = "NO BACK")
             {
-                MsgBox NO BACK
+                ;MsgBox NO BACK
                 return
             }
             Sleep 150
@@ -186,7 +186,7 @@ cycleGags(debug=0, once=0)
         gag := pickGag(useable)
         if (gag = "NO TARGET")
         {
-            MsgBox NO GAGS
+            ;MsgBox NO GAGS
             RUNNING := 0
             return
         }
