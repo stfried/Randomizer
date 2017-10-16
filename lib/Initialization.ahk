@@ -18,6 +18,12 @@ init(forceR=0, forceC=0)
     parseConfig(Contents)
     calculateCoords()
     fillSOS()
+	FileRead, content, twhitelist.dat
+	whitelist := []
+	Loop, parse, content, `n
+	{
+		whitelist[A_Index] := A_LoopField
+	}
 }
 
 reInit()

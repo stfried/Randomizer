@@ -8,6 +8,7 @@ CoordMode, ToolTip, Screen
 #Include lib\GagPicker.ahk
 #Include lib\TargetPicker.ahk
 #Include lib\SOS.ahk
+#Include lib\Roulette.ahk
 #Include lib\Menu.ahk
 
 AfterMenu:
@@ -21,6 +22,18 @@ charWidthInit()
 createMenu()
 buildWhitelistedTracks()
 Gosub, CreateGUI
+
+useable := []
+for idx, track in ALLOWED_TRACKS
+{
+	level := MIN_LEVEL
+	while level <= MAX_LEVEL
+	{
+		useable.Insert(Gags[track, level])
+		level +=1
+	}
+}
+buildSVG(useable, Gags[1,1])
 
 ;DEBUG
 ^Q::

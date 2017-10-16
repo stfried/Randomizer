@@ -31,6 +31,7 @@ global TARGET := 0x4f6ee9
 
 global Gags := []
 global SosCards := []
+global whitelist := []
 
 getCoords(ByRef OutputX, ByRef OutputY, Input)
 {
