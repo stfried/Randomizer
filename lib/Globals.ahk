@@ -16,12 +16,10 @@ global FIRE_CHANCE := 0
 global SOS_CHANCE := 0
 global PASS_CHANCE := 0
 global DOODLE_CHANCE := 0
+global GAG_CHAT := 0
+
 global RUNNING := 0
 global MOUSE_SPEED := 2
-global WINDOW_LEN = 394
-global CHAR_WIDTHS := []
-global NUM_LINES := 53242
-
 
 global BLUE := 0x0088e3
 global GREEN := 0x448888
@@ -31,7 +29,13 @@ global TARGET := 0x4f6ee9
 
 global Gags := []
 global SosCards := []
+
+global WINDOW_LEN = 394
+global CHAR_WIDTHS := []
+global NUM_LINES := 53242
+global NUM_SHOPKEEPERS := 477
 global whitelist := []
+global shopkeepers := []
 
 global first_use := 1
 

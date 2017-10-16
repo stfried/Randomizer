@@ -36,7 +36,7 @@ pickSOS()
             if (chance <= dc)
             {
                 doodleTrick()
-                return
+                return "DOODLE"
             }
     }
     Random, presses, 0, 4
@@ -53,7 +53,7 @@ pickSOS()
         }
     }
     MouseClick,, SosCards[card].getX(), SosCards[card].getY(),,MOUSE_SPEED
-    return
+    return "SOS"
 }
 
 isCardValid(coord)

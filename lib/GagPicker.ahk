@@ -54,39 +54,62 @@ testGags(ByRef useable)
     }
 }
 
-chooseOneGag(debug=0, roulette=0)
+chooseOneGag(roulette=0)
 {
-    ;Count gags and then choose one
-    ;useable := countUseableGags()
-    ;if (debug)
-    ;{
-    ;    testGags(useable)
-    ;}
-    ;pickGag(useable, roulette)
-    ;cycleGags(0,1)
 	MouseMove, 0, 0, 0
 	useable := countUseableGags()
-	gag := pickGag(useable,1)
-	buildSVG(useable, gag)
-	IfWinExist, wheel.html - Google Chrome
-		WinActivate ;
-	Sleep 50
-	ControlSend, , {ctrl down}r{ctrl up}, wheel.html - Google Chrome
-	ControlSend, , {F5}, wheel.html - Google Chrome
-	IfWinExist, Toontown Rewritten
-		WinActivate ;
-	if (first_use)
-	{
-		Sleep 8500
-		first_use := 0
-	}
-	else
-		Sleep 6500
-	IfWinExist, 1-MENU.jpg - Photos
-		WinActivate ;
-	clickGag(gag)
-	;if (not gag.isSingleTarget())
-	;	chooseTargetCycle(gag, [], [], [], [], [], 0, 0, 0, 0, 0)
+	gag := pickGag(useable,roulette)
+    if (roulette)
+    {
+        buildSVG(useable, gag)
+        IfWinExist, wheel.html - Google Chrome
+            WinActivate
+        Sleep 50
+        ControlSend, , {ctrl down}r{ctrl up}, wheel.html - Google Chrome
+        ControlSend, , {F5}, wheel.html - Google Chrome
+        IfWinExist, Toontown Rewritten
+            WinActivate
+        if (first_use)
+        {
+            Sleep 8500
+            first_use := 0
+        }
+        else
+            Sleep 6500
+        clickGag(gag)
+    }
+	if (gag.isSingleTarget())
+		target := chooseTargetCycle(gag, [], [], [], [], [], 0, 0, 0, 0, 0)
+    if (GAG_CHAT)
+    {
+        chat := ""
+        Random, chance, 0, 100
+        if (chance <= 50 and gag.getTrack() = SOUND and gag.getLevel() = 6)
+        {
+            IfWinExist, Toontown Rewritten
+                WinActivate
+            Random, num, 1, 325
+            if (num = 13)
+                chat := "out"
+            else
+                chat := whitelist[num]
+        }
+        else if (chance <= 100)
+        {
+            IfWinExist, Toontown Rewritten
+                WinActivate
+            if (gag.getTrack() <= DROP)
+                chat := "org"
+            else if (gag.getTrack() = EXTRA and gag.getLevel() = 2)
+            {
+                if (target = "SOS")
+                   Random, num, 1, NUM_SHOPKEEPERS
+                   chat := shopkeepers[n]
+            }
+        }
+        if (chat != "")
+            Send %chat% {ENTER}
+    }
 	
 }
 
@@ -100,54 +123,47 @@ clickGag(gag, roulette=0)
 
 pickGag(ByRef useable, roulette=0)
 {
-    ;if (roulette)
-    ;{
-    ;    Random, num, 10, 20
-    ;    Loop %Num%
-    ;    {
-    ;        Random, choice, 1, useable.Length()
-    ;        MouseMove, useable[choice].coord.getX(), useable[choice].coord.getY()
-    ;    }
-    ;}
-
     ;Click on a gag and return its object
-    f_c := 0
-    
-    if (FIRE_CHANCE > 0)
-        f_c += FIRE_CHANCE
-    p_c := f_c
-    if (PASS_CHANCE > 0)
-        p_c += PASS_CHANCE
-    s_c := p_c
-    if (SOS_CHANCE > 0)
-        s_c += SOS_CHANCE 
-    if (s_c > 100)
-    {
-        MsgBox ERROR: PASS, FIRE, AND SOS EXCEED 100`%
-    }
-    else if (s_c > 0)
-    {
-        Random, chance, 1, 100
-        if (chance <= f_c)
-        {
-			clickGag(Gags[EXTRA, 1], roulette)
-            ;MouseClick, , Gags[EXTRA, 1].coord.getX(), Gags[EXTRA, 1].coord.getY(),,MOUSE_SPEED
-            return Gags[EXTRA, 1]
-        }
-        else if (chance <= p_c)
-        {
-			clickGag(Gags[EXTRA, 2], roulette)
-            ;MouseClick, , Gags[EXTRA, 2].coord.getX(), Gags[EXTRA, 2].coord.getY(),,MOUSE_SPEED
-            return Gags[EXTRA, 2]
-        }
-        else if (chance <= s_c)
-        {
-			clickGag(Gags[EXTRA, 3], roulette)
-            ;MouseClick, , Gags[EXTRA, 3].coord.getX(), Gags[EXTRA, 3].coord.getY(),,MOUSE_SPEED
-            return Gags[EXTRA, 3]
-        }
-    }
 
+    if (not roulette)
+    {
+        ;Check alternatives to gags
+        f_c := 0
+        if (FIRE_CHANCE > 0)
+            f_c += FIRE_CHANCE
+        p_c := f_c
+        if (PASS_CHANCE > 0)
+            p_c += PASS_CHANCE
+        s_c := p_c
+        if (SOS_CHANCE > 0)
+            s_c += SOS_CHANCE 
+        if (s_c > 100)
+        {
+            MsgBox ERROR: PASS, FIRE, AND SOS EXCEED 100`%
+        }
+        else if (s_c > 0)
+        {
+            Random, chance, 1, 100
+            if (chance <= f_c)
+            {
+                clickGag(Gags[EXTRA, 1], roulette)
+                ;MouseClick, , Gags[EXTRA, 1].coord.getX(), Gags[EXTRA, 1].coord.getY(),,MOUSE_SPEED
+                return Gags[EXTRA, 1]
+            }
+            else if (chance <= p_c)
+            {
+                clickGag(Gags[EXTRA, 2], roulette)
+                ;MouseClick, , Gags[EXTRA, 2].coord.getX(), Gags[EXTRA, 2].coord.getY(),,MOUSE_SPEED
+                return Gags[EXTRA, 2]
+            }
+            else if (chance <= s_c)
+            {
+                clickGag(Gags[EXTRA, 3], roulette)
+                ;MouseClick, , Gags[EXTRA, 3].coord.getX(), Gags[EXTRA, 3].coord.getY(),,MOUSE_SPEED
+                return Gags[EXTRA, 3]
+            }
+        }
+    }
     Random, choice, 1, useable.Length()
     while (not gagIsValid(useable[useable.Length()]))
     {

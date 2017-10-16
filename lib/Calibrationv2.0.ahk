@@ -192,6 +192,7 @@ parseConfig(Contents)
         MsgBox ERROR: PASS, FIRE, AND SOS EXCEED 100`%`n PLEASE FIX YOUR CONFIG.
     }
     readVals(DOODLE_CHANCE, Lines[17])
+    readVals(GAG_CHAT, Lines[19])
 }
 
 readVals(ByRef val, line, is_num="True")
@@ -245,7 +246,9 @@ SOS: 0
 #Likelihood to pass instead of use a gag. Number between 0 and 100. -1 to be treated like a gag.
 PASS: 0
 #Likelihood to use your doodle instead of an SOS card. Number between 0 and 100. -1 to be treated equally with SOS cards.
-Doodle: 100
+DOODLE: 100
+#Randomizer can say things in chat when using single-gag or roulette.
+GAG_CHAT: 0
     ), config.ini
 }
 
@@ -277,6 +280,8 @@ SOS: %SOS_CHANCE%
 #Likelihood to pass instead of use a gag. Number between 0 and 100. -1 to be treated like a gag.
 PASS: %PASS_CHANCE%
 #Likelihood to use your doodle instead of an SOS card. Number between 0 and 100. -1 to be treated equally with SOS cards.
-Doodle: %DOODLE_CHANCE%
+DOODLE: %DOODLE_CHANCE%
+#Randomizer can say things in chat when using single-gag or roulette.
+GAG_CHAT: %GAG_CHAT%
     ), config.ini
 }

@@ -34,8 +34,7 @@ menuHelper(menuitem)
 {
     if (menuitem = "SingleRoulette")
     {
-        chooseOneGag(0,1)
-        chooseOneTarget(1)
+        chooseOneGag(0)
         return
     }
     if (menuitem = "GagCycle")

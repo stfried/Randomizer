@@ -83,21 +83,6 @@ singleTargetCycle(ByRef targs, ByRef doneBefore)
         }
         doneBefore := 1
     }
-    ;testTargets(targs, debug)
-    ;while (not isTargetValid(targs[targs.Length()]))
-    ;{
-    ;    Sleep 50
-    ;    if (A_Index = 15)
-    ;    {
-    ;        MsgBox TARGET NOT FOUND
-    ;        return
-    ;    }
-    ;    if (isBackAvailable())
-    ;    {
-    ;        MouseClick, , Gags[TGETS,3].coord.getX(), Gags[TGETS,3].coord.getY(),,MOUSE_SPEED
-    ;        return
-    ;    }
-    ;}
     pickTarget(targs)
 }
 
@@ -116,7 +101,7 @@ chooseTargetCycle(gag, ByRef attackTargets, ByRef tuTargets, ByRef lureTargets, 
         else
         {
             ;SOS
-            pickSOS()
+            return pickSOS()
         }
     }
     else if (gag.isSingleTarget())
@@ -129,6 +114,7 @@ chooseTargetCycle(gag, ByRef attackTargets, ByRef tuTargets, ByRef lureTargets, 
             targ := singleTargetCycle(lureTargets, lured)
         else
             targ := singleTargetCycle(attackTargets, attacked)
+        return targ
     }
-    return targ
+    return
 }

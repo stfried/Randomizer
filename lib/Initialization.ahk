@@ -18,12 +18,21 @@ init(forceR=0, forceC=0)
     parseConfig(Contents)
     calculateCoords()
     fillSOS()
-	FileRead, content, twhitelist.dat
-	whitelist := []
+    blacklistGags()
+	FileRead, content, bin\twhitelist.dat
 	Loop, parse, content, `n
 	{
 		whitelist[A_Index] := A_LoopField
 	}
+    charWidthInit()
+    FileRead, content, bin\shopkeepers.txt
+	Loop, parse, content, `n
+	{
+		shopkeepers[A_Index] := A_LoopField
+	}
+    createMenu()
+    buildWhitelistedTracks()
+    Gosub, CreateGUI
 }
 
 reInit()
