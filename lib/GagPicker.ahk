@@ -10,10 +10,10 @@ gagIsValid(gag)
     ;Note: does not check if it's in an allowed level or track
     if isBlackListed(gag)
         return 0
-    PixelSearch Px, Py, gag.coord.getX(), gag.coord.getY(), gag.coord.getX(), gag.coord.getY(), BLUE, 50, FAST|RGB
+    PixelSearch Px, Py, gag.coord.getX()-5, gag.coord.getY()-5, gag.coord.getX()+5, gag.coord.getY()+5, BLUE, 50, FAST|RGB
     if ErrorLevel
     {
-        PixelSearch Px, Py, gag.coord.getX(), gag.coord.getY(), gag.coord.getX(), gag.coord.getY(), GREEN, 30, FAST|RGB
+        PixelSearch Px, Py, gag.coord.getX()-5, gag.coord.getY()-5, gag.coord.getX()+5, gag.coord.getY()+5, GREEN, 30, FAST|RGB
         if ErrorLevel
             return 0
     }
@@ -63,20 +63,52 @@ chooseOneGag(debug=0, roulette=0)
     ;    testGags(useable)
     ;}
     ;pickGag(useable, roulette)
-    cycleGags(0,1)
+    ;cycleGags(0,1)
+	MouseMove, 0, 0, 0
+	useable := countUseableGags()
+	gag := pickGag(useable,1)
+	buildSVG(useable, gag)
+	IfWinExist, wheel.html - Google Chrome
+		WinActivate ;
+	Sleep 50
+	ControlSend, , {ctrl down}r{ctrl up}, wheel.html - Google Chrome
+	ControlSend, , {F5}, wheel.html - Google Chrome
+	IfWinExist, Toontown Rewritten
+		WinActivate ;
+	if (first_use)
+	{
+		Sleep 8500
+		first_use := 0
+	}
+	else
+		Sleep 6500
+	IfWinExist, 1-MENU.jpg - Photos
+		WinActivate ;
+	clickGag(gag)
+	;if (not gag.isSingleTarget())
+	;	chooseTargetCycle(gag, [], [], [], [], [], 0, 0, 0, 0, 0)
+	
+}
+
+clickGag(gag, roulette=0)
+{
+	if (roulette = 0)
+	{
+		MouseClick, , gag.coord.getX(), gag.coord.getY(),,MOUSE_SPEED
+	}
 }
 
 pickGag(ByRef useable, roulette=0)
 {
-    if (roulette)
-    {
-        Random, num, 10, 20
-        Loop %Num%
-        {
-            Random, choice, 1, useable.Length()
-            MouseMove, useable[choice].coord.getX(), useable[choice].coord.getY()
-        }
-    }
+    ;if (roulette)
+    ;{
+    ;    Random, num, 10, 20
+    ;    Loop %Num%
+    ;    {
+    ;        Random, choice, 1, useable.Length()
+    ;        MouseMove, useable[choice].coord.getX(), useable[choice].coord.getY()
+    ;    }
+    ;}
 
     ;Click on a gag and return its object
     f_c := 0
@@ -98,17 +130,20 @@ pickGag(ByRef useable, roulette=0)
         Random, chance, 1, 100
         if (chance <= f_c)
         {
-            MouseClick, , Gags[EXTRA, 1].coord.getX(), Gags[EXTRA, 1].coord.getY(),,MOUSE_SPEED
+			clickGag(Gags[EXTRA, 1], roulette)
+            ;MouseClick, , Gags[EXTRA, 1].coord.getX(), Gags[EXTRA, 1].coord.getY(),,MOUSE_SPEED
             return Gags[EXTRA, 1]
         }
         else if (chance <= p_c)
         {
-            MouseClick, , Gags[EXTRA, 2].coord.getX(), Gags[EXTRA, 2].coord.getY(),,MOUSE_SPEED
+			clickGag(Gags[EXTRA, 2], roulette)
+            ;MouseClick, , Gags[EXTRA, 2].coord.getX(), Gags[EXTRA, 2].coord.getY(),,MOUSE_SPEED
             return Gags[EXTRA, 2]
         }
         else if (chance <= s_c)
         {
-            MouseClick, , Gags[EXTRA, 3].coord.getX(), Gags[EXTRA, 3].coord.getY(),,MOUSE_SPEED
+			clickGag(Gags[EXTRA, 3], roulette)
+            ;MouseClick, , Gags[EXTRA, 3].coord.getX(), Gags[EXTRA, 3].coord.getY(),,MOUSE_SPEED
             return Gags[EXTRA, 3]
         }
     }
@@ -121,11 +156,13 @@ pickGag(ByRef useable, roulette=0)
             return "NO TARGET"
         if (isBackAvailable())
         {
-            MouseClick, , Gags[TGETS,3].coord.getX(), Gags[TGETS,3].coord.getY(),,MOUSE_SPEED
+			clickGag(Gags[TGETS, 3], roulette)
+            ;MouseClick, , Gags[TGETS,3].coord.getX(), Gags[TGETS,3].coord.getY(),,MOUSE_SPEED
             break
         }
     }
-    MouseClick, , useable[choice].coord.getX(), useable[choice].coord.getY(),,MOUSE_SPEED
+	clickGag(useable[choice], roulette)
+    ;MouseClick, , useable[choice].coord.getX(), useable[choice].coord.getY(),,MOUSE_SPEED
     return useable[choice]
 }
 

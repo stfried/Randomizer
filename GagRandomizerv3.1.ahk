@@ -23,21 +23,8 @@ createMenu()
 buildWhitelistedTracks()
 Gosub, CreateGUI
 
-useable := []
-for idx, track in ALLOWED_TRACKS
-{
-	level := MIN_LEVEL
-	while level <= MAX_LEVEL
-	{
-		useable.Insert(Gags[track, level])
-		level +=1
-	}
-}
-buildSVG(useable, Gags[1,1])
-
-;DEBUG
 ^Q::
-    Gosub SingleRoulette
+    chooseOneGag(1,1)
     return
 
 ^W::
@@ -57,6 +44,11 @@ buildSVG(useable, Gags[1,1])
 ^A::
     Gosub SayRandom
     return
+
+^G::
+	useable := countUseableGags()
+	testGags(useable)
+	return
     
 
 RemoveToolTip:
@@ -68,8 +60,8 @@ SingleRoulette:
 IfWinExist, Toontown Rewritten
     WinActivate ;
 chooseOneGag(1,1)
-Sleep 50
-chooseOneTarget(1)
+;Sleep 50
+;chooseOneTarget(1)
 return
 
 GagCycle:

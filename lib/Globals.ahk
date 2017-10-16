@@ -33,6 +33,8 @@ global Gags := []
 global SosCards := []
 global whitelist := []
 
+global first_use := 1
+
 getCoords(ByRef OutputX, ByRef OutputY, Input)
 {
     C := []

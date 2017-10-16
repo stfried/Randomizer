@@ -40,7 +40,11 @@ buildSVG(useable, choice){
 	FileDelete, bin\roulette\wheel.html
 	
 	preHeader := "<html>`n"
-	preHeader := preHeader "`t<body onLoad=""pick(" choice.getTrack() "," choice.getLevel() "," deg ")"">`n"
+	if (first_use)
+	{
+		preHeader := preHeader "`t<body onLoad=""pick(" choice.getTrack() "," choice.getLevel() "," deg "," 1 ")"">`n"
+	}
+	preHeader := preHeader "`t<body onLoad=""pick(" choice.getTrack() "," choice.getLevel() "," deg "," 0 ")"" style=""background-color:#FF0000;"">`n"
 	FileAppend, % preHeader, bin\roulette\wheel.html
 	
 	FileAppend, % header, bin\roulette\wheel.html
@@ -64,11 +68,11 @@ rotate_about_origin(p, deg)
 points_to_poly(p1, p2, p3, rotation, gag, center, scale)
 {
 	polyID += 1
-	poly := "<g id=""" gag.getTrack() "," gag.getLevel() """transform=""rotate(" rotation "," origin[1] "," origin[2] ")"">`n"
-	poly := poly "`t<polygon id=""XMLID_" polyID "_"" class=""track" gag.getTrack() """ points=""" p1[1] "," p1[2] "," p2[1] "," p2[2] "," p3[1] "," p3[2] """/>`n"
-	poly := poly "`t<image style=""overflow:visible;"" width=""30"" height=""30"" xlink:href=""../img/gags/" gag.getTrack() "," gag.getLevel() ".png"" transform=""matrix(" scale " 0 0 " scale " " center[1] " " center[2] ")"">`n"
-	poly := poly "`t</image>`n"
-	poly := poly "</g>"
+	poly := "`t`t`t<g id=""" gag.getTrack() "," gag.getLevel() """transform=""rotate(" rotation "," origin[1] "," origin[2] ")"">`n"
+	poly := poly "`t`t`t`t<polygon id=""XMLID_" polyID "_"" class=""track" gag.getTrack() """ points=""" p1[1] "," p1[2] "," p2[1] "," p2[2] "," p3[1] "," p3[2] """/>`n"
+	poly := poly "`t`t`t`t<image style=""overflow:visible;"" width=""30"" height=""30"" xlink:href=""../img/gags/" gag.getTrack() "," gag.getLevel() ".png"" transform=""matrix(" scale " 0 0 " scale " " center[1] " " center[2] ")"">`n"
+	poly := poly "`t`t`t`t</image>`n"
+	poly := poly "`t`t`t</g>`n"
 	return poly
 }
 
