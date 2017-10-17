@@ -78,5 +78,6 @@ doodleTrick()
     MouseClick,, Gags[SOS,7].coord.getX(), Gags[SOS,7].coord.getY()
     Sleep 50
     Random, y_c, Gags[SOS,8].coord.getY(), Gags[SOS,9].coord.getY()
+    Sleep 50
     MouseClick,, Gags[SOS,8].coord.getX(), y_c,,MOUSE_SPEED
 }

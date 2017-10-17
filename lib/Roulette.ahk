@@ -3,8 +3,35 @@ global origin := [306,396]
 
 buildSVG(useable, choice){
 	polyID := 4
+    total_deg := 360.0
+    deg_offset := 0
+    start := [627,396]
+    polys := ""
+    if (FIRE_CHANCE > 0)
+    {
+        d := (FIRE_CHANCE / 100) * 360.0
+        total_deg -= d
+        deg_offset += d
+        poly := points_to_poly(origin, start, rotate_about_origin(start,d), deg_offset, Gags[EXTRA,1], rotate_about_origin([485,380], d/2), 0)
+        polys := polys . poly "`n"
+    }
+    if (PASS_CHANCE > 0)
+    {
+        d := (PASS_CHANCE / 100) * 360.0
+        total_deg -= d
+        deg_offset += d
+        poly := points_to_poly(origin, start, rotate_about_origin(start,d), deg_offset, Gags[EXTRA,2], rotate_about_origin([485,380], d/2), 0)
+        polys := polys . poly "`n"
+    }
+    if (SOS_CHANCE > 0)
+    {
+        d := (SOS_CHANCE / 100) * 360.0
+        total_deg -= d
+        deg_offset += d
+        poly := points_to_poly(origin, start, rotate_about_origin(start,d), deg_offset, Gags[EXTRA,3], rotate_about_origin([485,380], d/2), 0)
+        polys := polys . poly "`n"
+    }
 	n := useable.length()
-	;n := 20
 	;Shuffle gags
 	Loop % n
 	{
@@ -13,9 +40,7 @@ buildSVG(useable, choice){
 		useable[i] := useable[A_Index]
 		useable[A_Index] := tmp
 	}
-	deg := 360.0/n
-	polys := ""
-	start := [627,396]
+	deg := total_deg/n
 	rotated := rotate_about_origin(start, deg)
 	scale := 1
 	if (deg < 10)
@@ -30,7 +55,7 @@ buildSVG(useable, choice){
 	center[2] -= scale * 15
 	Loop % n
 	{
-		rotation := A_Index * deg
+		rotation := A_Index * deg + deg_offset
 		poly := points_to_poly(origin, start, rotated, rotation, useable[A_Index], center, scale)
 		polys := polys . poly "`n"
 	}
@@ -73,11 +98,11 @@ points_to_poly(p1, p2, p3, rotation, gag, center, scale)
     if (gag.getTrack() = EXTRA)
     {
         if (gag.getLevel() = 1)
-            poly := poly "`t`t`t`t<text transform=""matrix(1 0 0 1 485.7502 382.8908)"" class=""st0 st4 st5"">FIRE</text>"
+            poly := poly "`t`t`t`t<text transform=""matrix(1 0 0 1 " center[1] " " center[2] + 20 ")"" class=""st0 st4 st5"">FIRE</text>"
         else if (gag.getLevel() = 2)
-            poly := poly "`t`t`t`t<text transform=""matrix(1 0 0 1 485.7502 382.8908)"" class=""st0 st4 st5"">PASS</text>"
+            poly := poly "`t`t`t`t<text transform=""matrix(1 0 0 1 " center[1] " " center[2] + 20 ")"" class=""st0 st4 st5"">PASS</text>"
         else
-            poly := poly "`t`t`t`t<text transform=""matrix(1 0 0 1 485.7502 382.8908)"" class=""st0 st4 st5"">SOS</text>"
+            poly := poly "`t`t`t`t<text transform=""matrix(1 0 0 1 " center[1] " " center[2] + 20 ")"" class=""st0 st4 st5"">SOS</text>"
     }
     else
         poly := poly "`t`t`t`t<image style=""overflow:visible;"" width=""30"" height=""30"" xlink:href=""../img/gags/" gag.getTrack() "," gag.getLevel() ".png"" transform=""matrix(" scale " 0 0 " scale " " center[1] " " center[2] ")"">`n"

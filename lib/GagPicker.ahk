@@ -125,8 +125,8 @@ pickGag(ByRef useable, roulette=0)
 {
     ;Click on a gag and return its object
 
-    if (not roulette)
-    {
+    ;if (not roulette)
+    ;{
         ;Check alternatives to gags
         f_c := 0
         if (FIRE_CHANCE > 0)
@@ -163,7 +163,7 @@ pickGag(ByRef useable, roulette=0)
                 return Gags[EXTRA, 3]
             }
         }
-    }
+    ;}
     Random, choice, 1, useable.Length()
     while (not gagIsValid(useable[useable.Length()]))
     {
