@@ -5,7 +5,7 @@ CreateGUI:
 Gui +AlwaysOnTop
 Gui, Add, Text, x2 y349 w250 h20 +Center, A Runic Sweller 2017
 Gui, Add, Picture, x2 y-1 w250 h50 , bin\img\logo-full.png
-Gui, Add, Text, x2 y49 w250 h20 +Center, Version 3.1.0
+Gui, Add, Text, x2 y49 w250 h20 +Center, Version 3.2.0
 Gui, Add, Tab, x2 y69 w250 h280 , Actions|Config|Gag Whitelist|
 Gui, Add, Button, x2 y99 w110 h30 gSingleRoulette, Single Gag (Ctrl+Q)
 Gui, Add, Button, x132 y99 w110 h30 gAnimatedRoulette, Roulette (Ctrl+R)

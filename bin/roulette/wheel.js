@@ -21,17 +21,46 @@ async function spin() {
 	}
 }
 
+async function increase_volume(audio, cap) {
+    while (audio.volume < 0.75) {
+        audio.volume += 0.01;
+        await sleep(50);
+    }
+}
+
+async function decrease_volume(audio, floor) {
+    while (audio.volume > floor) {
+        try {
+            audio.volume -= 0.04;
+        }
+        catch(err) {
+            audio.volume = 0;
+        }
+        await sleep(50);
+    }
+    audio.pause()
+}
+
+async function intro() {
+    var intros = ['brawlBrewing.wav', 'greatSlam.wav', 'highClassBout.wav', 'redHot.wav', 'swellBattle.wav']
+    var num = Math.floor(Math.random() * intros.length);
+    var intro = new Audio('../music/' + intros[num]);
+    intro.volume = 0.5;
+    intro.play();
+    await sleep(2500);
+}
+
 async function pick(track,level,deg, first_use) {
 	if (first_use)
 	{
-		var intro = new Audio('../music/redHot.wav');
-		intro.volume = 0.5;
-		intro.play();
-		await sleep(2500);
+        await intro();
 	}
-	var audio = new Audio('../music/bigApple.wav');
-	audio.volume = 0.75;
+    var songs = ['bigApple.wav', 'lastSurprise.wav', 'marioSlide.wav', 'MeatBall Parade.mp3']
+	var num = Math.floor(Math.random() * songs.length);
+    var audio = new Audio('../music/' + songs[num]);
+	audio.volume = 0.3;
 	audio.play();
+    increase_volume(audio, 0.75)
 	var id = track + "," + level;
 	var wheel = document.getElementById("WHEEL_CONTAINER");
 	var gag = document.getElementById(id)
@@ -53,7 +82,6 @@ async function pick(track,level,deg, first_use) {
 		await sleep(50);
 	}
 	while(speed >= 3){
-		audio.volume -= 0.25/topSpeed
 		rotation += speed;
 		speed--;
 		wheel.setAttribute("transform", "rotate(" + rotation + ",306,396)");
@@ -67,16 +95,58 @@ async function pick(track,level,deg, first_use) {
 	rotation += 1;
 	wheel.setAttribute("transform", "rotate(" + rotation + ",306,396)");
 	await sleep(50);
-	while(audio.volume > 0.01)
-	{
-		audio.volume /= 1.5
-		await sleep(50);
-	}
-	var done = new Audio('../music/earthboundWin.wav');
-	done.volume = 0.5;
+    decrease_volume(audio, 0)
+    var result = '../music/earthboundWin.wav';
+    if (track <= 7 && level == 1) {
+        var failures = ['golfMiss.wav', 'goSad.ogg', 'oof.wav']
+        var num = Math.floor(Math.random() * failures.length)
+        result = '../music/' + failures[num];
+    }
+    console.log(result)
+	var done = new Audio(result);
+	done.volume = 0.4;
 	done.play();
-	audio.pause()
-	console.log("DONE")
+    show_result(track, level)
+    hide_element(document.getElementById("WHEEL_CONTAINER"))
+    hide_element(document.getElementById("XMLID_1_"))
+    hide_element(document.getElementById("COACH_Z"))
+    hide_element(document.getElementById("ARROW"))
+
+
+    await sleep(4000)
+    decrease_volume(done, 0)
+}
+
+async function show_result(track,level) {
+    var elem;
+    if (track == 8) {
+        elem = document.getElementById(track + "," + level).getElementsByTagName("text")[0];
+    }
+    else {
+        elem = document.getElementById(track + "," + level).getElementsByTagName("image")[0];
+    }
+    var cln = elem.cloneNode(true);
+    document.getElementById("Layer_1").appendChild(cln)
+    var rotation = 0
+    var scale = 1
+    var attributes = elem.getAttribute("transform")
+    while (rotation < 720) {
+        scale += 0.1
+        rotation += 24
+        cln.setAttribute("transform", attributes + "scale(" + scale + ") rotate(" + rotation + ")")
+        await sleep(50)
+    }
+    await sleep(1000)
+    hide_element(cln, 0.05)
+}
+
+async function hide_element(elem, speed=0.02) {
+    var opacity = 1.0
+    while (opacity > 0) {
+        opacity -= speed
+        elem.setAttribute("style", "opacity:" + opacity + ";")
+        await sleep(50)
+    }
 }
 
 function reset() {

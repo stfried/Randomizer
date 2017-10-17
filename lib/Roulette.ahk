@@ -7,40 +7,40 @@ buildSVG(useable, choice){
     deg_offset := 0
     start := [627,396]
     polys := ""
+    extra_deg := [-1,-1,-1]
+    original_length := useable.length()
+    gag_choices := []
+    n := useable.length()
+    Loop % n
+        gag_choices[A_Index] := useable[A_Index]
     if (FIRE_CHANCE > 0)
     {
-        d := (FIRE_CHANCE / 100) * 360.0
-        total_deg -= d
-        deg_offset += d
-        poly := points_to_poly(origin, start, rotate_about_origin(start,d), deg_offset, Gags[EXTRA,1], rotate_about_origin([485,380], d/2), 0)
-        polys := polys . poly "`n"
+        extra_deg[1] := (FIRE_CHANCE / 100) * 360.0
+        total_deg -= extra_deg[1]
+        gag_choices.Insert(Gags[EXTRA,1])
     }
     if (PASS_CHANCE > 0)
     {
-        d := (PASS_CHANCE / 100) * 360.0
-        total_deg -= d
-        deg_offset += d
-        poly := points_to_poly(origin, start, rotate_about_origin(start,d), deg_offset, Gags[EXTRA,2], rotate_about_origin([485,380], d/2), 0)
-        polys := polys . poly "`n"
+        extra_deg[2] := (PASS_CHANCE / 100) * 360.0
+        total_deg -= extra_deg[2]
+        gag_choices.Insert(Gags[EXTRA,2])
     }
     if (SOS_CHANCE > 0)
     {
-        d := (SOS_CHANCE / 100) * 360.0
-        total_deg -= d
-        deg_offset += d
-        poly := points_to_poly(origin, start, rotate_about_origin(start,d), deg_offset, Gags[EXTRA,3], rotate_about_origin([485,380], d/2), 0)
-        polys := polys . poly "`n"
+        extra_deg[3] := (SOS_CHANCE / 100) * 360.0
+        total_deg -= extra_deg[3]
+        gag_choices.Insert(Gags[EXTRA,3])
     }
-	n := useable.length()
+	n := gag_choices.length()
 	;Shuffle gags
 	Loop % n
 	{
 		Random, i, 1, n
-		tmp := useable[i]
-		useable[i] := useable[A_Index]
-		useable[A_Index] := tmp
+		tmp := gag_choices[i]
+		gag_choices[i] := gag_choices[A_Index]
+		gag_choices[A_Index] := tmp
 	}
-	deg := total_deg/n
+	deg := total_deg/original_length
 	rotated := rotate_about_origin(start, deg)
 	scale := 1
 	if (deg < 10)
@@ -53,11 +53,24 @@ buildSVG(useable, choice){
 	center := rotate_about_origin([500,396], deg/2)
 	center[1] -= scale * 15
 	center[2] -= scale * 15
+    rotation := 0
 	Loop % n
 	{
-		rotation := A_Index * deg + deg_offset
-		poly := points_to_poly(origin, start, rotated, rotation, useable[A_Index], center, scale)
-		polys := polys . poly "`n"
+        g := gag_choices[A_Index]
+        d := 0
+		if (g.getTrack() = EXTRA and extra_deg[g.getLevel()] != -1)
+        {
+            d := extra_deg[g.getLevel()]
+            rotation += d
+            poly := points_to_poly(origin, start, rotate_about_origin(start,d), rotation, g, rotate_about_origin([485,380], d/2), 0)
+        }
+        else
+        {
+            d := deg
+            rotation += d
+            poly := points_to_poly(origin, start, rotated, rotation, g, center, scale)
+        }
+        polys := polys . poly "`n"
 	}
 	;Read header and closer
 	FileRead, header, bin\roulette\header.html
@@ -75,6 +88,7 @@ buildSVG(useable, choice){
 	FileAppend, % header, bin\roulette\wheel.html
 	FileAppend, % polys, bin\roulette\wheel.html
 	FileAppend, % closer, bin\roulette\wheel.html
+    return
 }
 
 rotate_about_origin(p, deg)
