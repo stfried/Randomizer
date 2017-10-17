@@ -70,7 +70,17 @@ points_to_poly(p1, p2, p3, rotation, gag, center, scale)
 	polyID += 1
 	poly := "`t`t`t<g id=""" gag.getTrack() "," gag.getLevel() """transform=""rotate(" rotation "," origin[1] "," origin[2] ")"">`n"
 	poly := poly "`t`t`t`t<polygon id=""XMLID_" polyID "_"" class=""track" gag.getTrack() """ points=""" p1[1] "," p1[2] "," p2[1] "," p2[2] "," p3[1] "," p3[2] """/>`n"
-	poly := poly "`t`t`t`t<image style=""overflow:visible;"" width=""30"" height=""30"" xlink:href=""../img/gags/" gag.getTrack() "," gag.getLevel() ".png"" transform=""matrix(" scale " 0 0 " scale " " center[1] " " center[2] ")"">`n"
+    if (gag.getTrack() = EXTRA)
+    {
+        if (gag.getLevel() = 1)
+            poly := poly "`t`t`t`t<text transform=""matrix(1 0 0 1 485.7502 382.8908)"" class=""st0 st4 st5"">FIRE</text>"
+        else if (gag.getLevel() = 2)
+            poly := poly "`t`t`t`t<text transform=""matrix(1 0 0 1 485.7502 382.8908)"" class=""st0 st4 st5"">PASS</text>"
+        else
+            poly := poly "`t`t`t`t<text transform=""matrix(1 0 0 1 485.7502 382.8908)"" class=""st0 st4 st5"">SOS</text>"
+    }
+    else
+        poly := poly "`t`t`t`t<image style=""overflow:visible;"" width=""30"" height=""30"" xlink:href=""../img/gags/" gag.getTrack() "," gag.getLevel() ".png"" transform=""matrix(" scale " 0 0 " scale " " center[1] " " center[2] ")"">`n"
 	poly := poly "`t`t`t`t</image>`n"
 	poly := poly "`t`t`t</g>`n"
 	return poly

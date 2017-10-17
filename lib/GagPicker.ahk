@@ -94,7 +94,7 @@ chooseOneGag(roulette=0)
             else
                 chat := whitelist[num]
         }
-        else if (chance <= 100)
+        else if (chance <= 25)
         {
             IfWinExist, Toontown Rewritten
                 WinActivate
