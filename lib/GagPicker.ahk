@@ -78,13 +78,19 @@ chooseOneGag(roulette=0)
             Sleep 6500
         clickGag(gag)
     }
+    target := ""
 	if (gag.isSingleTarget())
 		target := chooseTargetCycle(gag, [], [], [], [], [], 0, 0, 0, 0, 0)
     if (GAG_CHAT)
     {
         chat := ""
         Random, chance, 0, 100
-        if (chance <= 50 and gag.getTrack() = SOUND and gag.getLevel() = 6)
+        if (gag.getTrack() = EXTRA and gag.getLevel() = 3)
+        {
+           Random, num, 1, NUM_SHOPKEEPERS
+           chat := shopkeepers[num]
+        }
+        else if (chance <= 50 and gag.getTrack() = SOUND and gag.getLevel() = 6)
         {
             IfWinExist, Toontown Rewritten
                 WinActivate
@@ -99,12 +105,12 @@ chooseOneGag(roulette=0)
             IfWinExist, Toontown Rewritten
                 WinActivate
             if (gag.getTrack() <= DROP)
-                chat := "org"
-            else if (gag.getTrack() = EXTRA and gag.getLevel() = 2)
             {
-                if (target = "SOS")
-                   Random, num, 1, NUM_SHOPKEEPERS
-                   chat := shopkeepers[n]
+                Random, chance, 1, 2
+                if (chance = 2)
+                    chat := "not org"
+                else
+                    chat := "org"
             }
         }
         if (chat != "")

@@ -19,20 +19,54 @@ init(forceR=0, forceC=0)
     calculateCoords()
     fillSOS()
     blacklistGags()
+    ;Read whitelist
 	FileRead, content, bin\twhitelist.dat
 	Loop, parse, content, `n
 	{
 		whitelist[A_Index] := A_LoopField
 	}
+    ;Init char widths
     charWidthInit()
+    ;Read shopkeepers
     FileRead, content, bin\shopkeepers.txt
 	Loop, parse, content, `n
 	{
 		shopkeepers[A_Index] := A_LoopField
 	}
-    createMenu()
+    ;Read templates
+    FileRead, content, bin\wordlists\templates.txt
+    Loop, parse, content, `n
+    {
+        template := A_LoopField
+        StringReplace,template,template,`n,,A
+        StringReplace,template,template,`r,,A
+        if (template != "")
+            templates[A_Index] := template
+    }
+    ;Read wordlists
+    categories := ["adjective", "cog", "cog-plural", "cog_type", "cog_type-plural", "gag", "gag-plural", "gag_track", "name", "noun", "noun-plural", "number", "sos_card", "species", "species-plural", "staff", "verb", "verbed", "verbing"]
+    Loop, % categories.length()
+    {
+        ;Read from category
+        category := categories[A_Index]
+        filename := "bin\wordlists\" . category . ".txt"
+        FileRead, content, %filename%
+        Loop, parse, content, `n
+        {
+            word := A_LoopField
+            StringReplace,word,word,`n,,A
+            StringReplace,word,word,`r,,A
+            if (word != "")
+                wordlists[category, A_Index] := word
+        }
+    }
+    ;Reset whitelisted tracks in GUI
     buildWhitelistedTracks()
-    Gosub, CreateGUI
+    if (forceR = 0 and forceC = 0)
+    {
+        createMenu()
+        Gosub, CreateGUI
+    }
 }
 
 reInit()
@@ -52,12 +86,14 @@ recalibrate()
 {
     reInit()
     init(1)
+    attemptReload()
 }
 
 reconfig()
 {
     reInit()
     init(0, 1)
+    attemptReload()
 }
 
 calculateCoords()

@@ -1,0 +1,10 @@
+dog
+cat
+mouse
+duck
+horse
+pig
+bear
+monkey
+deer
+crocodile

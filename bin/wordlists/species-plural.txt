@@ -1,0 +1,11 @@
+dogs
+cats
+mouses
+ducks
+horses
+pigs
+bears
+monkeys
+monkies
+deers
+crocodiles

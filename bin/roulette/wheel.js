@@ -55,7 +55,7 @@ async function pick(track,level,deg, first_use) {
 	{
         await intro();
 	}
-    var songs = ['bigApple.wav', 'lastSurprise.wav', 'marioSlide.wav', 'MeatBall Parade.mp3']
+    var songs = ['bigApple.wav', 'marioSlide.wav', 'MeatBall Parade.mp3']
 	var num = Math.floor(Math.random() * songs.length);
     var audio = new Audio('../music/' + songs[num]);
 	audio.volume = 0.3;
@@ -137,10 +137,10 @@ async function show_result(track,level) {
         await sleep(50)
     }
     await sleep(1000)
-    hide_element(cln, 0.05)
+    hide_element(cln, 0.1)
 }
 
-async function hide_element(elem, speed=0.02) {
+async function hide_element(elem, speed=0.05) {
     var opacity = 1.0
     while (opacity > 0) {
         opacity -= speed
@@ -149,6 +149,14 @@ async function hide_element(elem, speed=0.02) {
     }
 }
 
+async function show_element(elem) {
+    elem.setAttribute("style", "opacity:100;")
+}
+
 function reset() {
 	document.getElementById("WHEEL_CONTAINER").setAttribute("transform", "rotate(0,306,396)");
+    show_element(document.getElementById("WHEEL_CONTAINER"))
+    show_element(document.getElementById("XMLID_1_"))
+    show_element(document.getElementById("COACH_Z"))
+    show_element(document.getElementById("ARROW"))
 }

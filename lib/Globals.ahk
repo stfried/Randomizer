@@ -35,6 +35,8 @@ global CHAR_WIDTHS := []
 global NUM_LINES := 53242
 global NUM_SHOPKEEPERS := 477
 global whitelist := []
+global templates := []
+global wordlists := []
 global shopkeepers := []
 
 global first_use := 1

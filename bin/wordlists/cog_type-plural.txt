@@ -1,0 +1,4 @@
+bossbots
+lawbots
+cashbots
+sellbots

@@ -33,9 +33,9 @@ init()
     return
 
 ;Bring up menu
-^M::
-    Menu, MainMenu, Show
-    return
+;^M::
+;    Menu, MainMenu, Show
+;    return
 
 ^T::
     Gosub SayRandom
@@ -48,6 +48,10 @@ init()
 
 ^R::
     GoSub AnimatedRoulette
+    return
+
+^M::
+    GoSub SayMadlib
     return
     
 
@@ -98,4 +102,13 @@ string := buildString()
 Send % string
 Sleep 100
 Send {ENTER}
+return
+
+SayMadlib:
+IfWinExist, Toontown Rewritten
+    WinActivate
+string := makeTemplate()
+SendRaw % string
+Sleep 100
+;Send {ENTER}
 return

@@ -11,7 +11,8 @@ Gui, Add, Button, x2 y99 w110 h30 gSingleRoulette, Single Gag (Ctrl+Q)
 Gui, Add, Button, x132 y99 w110 h30 gAnimatedRoulette, Roulette (Ctrl+R)
 Gui, Add, Button, x2 y129 w110 h30 gGagCycle, Gag Cycle (Ctrl+W)
 Gui, Add, Button, x132 y129 w110 h30 gStopCycling, Stop Cycle (Ctrl+E)
-Gui, Add, Button, x2 y159 w110 h30 gSayRandom, Random Chat (Ctrl+T)
+Gui, Add, Button, x2 y159 w110 h30 gSayMadlib, Random Chat (Ctrl+Y)
+Gui, Add, Button, x132 y159 w110 h30 gSayRandom, Madlibs (Ctrl+M)
 Gui, Add, Button, x2 y279 w110 h30 gReCalibrate, Re-Calibrate
 Gui, Add, Button, x132 y279 w110 h30 gReConfig, Re-Config
 Gui, Add, Button, x2 y309 w110 h30 gReload, Reload
