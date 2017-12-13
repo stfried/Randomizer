@@ -44,7 +44,7 @@ init(forceR=0, forceC=0)
             templates[A_Index] := template
     }
     ;Read wordlists
-    categories := ["adjective", "cog", "cog-plural", "cog_type", "cog_type-plural", "gag", "gag-plural", "gag_track", "name", "noun", "noun-plural", "number", "sos_card", "species", "species-plural", "staff", "verb", "verbed", "verbing"]
+    categories := ["adjective", "cog", "cog-plural", "cog_type", "cog_type-plural", "gag", "gag-plural", "gag_track", "name", "noun", "noun-plural", "number", "sos_card", "species", "species-plural", "staff", "verb", "verbed", "verbing", "boss", "activity", "location"]
     Loop, % categories.length()
     {
         ;Read from category
